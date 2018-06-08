@@ -21,7 +21,8 @@ namespace LegendofGnome
     /// </summary>
     public partial class MainWindow : Window
     {
-        bool isPlayerGenerated = false;
+        public Point playerPoint = new Point(0, 0);
+        Projectile projectile = new Projectile();
         Player player = new Player();
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer movementTimer = new DispatcherTimer();
@@ -29,14 +30,14 @@ namespace LegendofGnome
         {
             InitializeComponent();
 
-            player.GeneratePlayer(Canvas);
+            player.GeneratePlayer(Canvas, playerPoint);
 
             GameTimer.Tick += GameTimer_Tick;
             GameTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 9000);//fps
             GameTimer.Start();
-            
+
             movementTimer.Tick += MovementTimer_Tick;
-            movementTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000/6);
+            movementTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);
             movementTimer.Start();
 
             this.Cursor = projectile.LOLHand;
@@ -46,9 +47,10 @@ namespace LegendofGnome
         private void GameTimer_Tick(object sender, EventArgs e)
         {
 
-            player.Move(player.player_rectangle, Canvas);
+            player.Move(player.player_rectangle, Canvas, playerPoint);
+            
         }
-        
+
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
             projectile.Move(Canvas);
@@ -57,8 +59,8 @@ namespace LegendofGnome
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Canvas.Children.Remove(projectile.arrow);
-            projectile.shoot(Canvas);
-            projectile.FindSlope(this);
+            projectile.shoot(Canvas, playerPoint);
+            projectile.FindSlope(this, playerPoint);
         }
     }
 }
