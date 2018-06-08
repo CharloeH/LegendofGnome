@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,24 +21,27 @@ namespace LegendofGnome
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Point playerPoint = new Point(0, 0);
+        public Point playerPoint;
         Projectile projectile = new Projectile();
         Player player = new Player();
         DispatcherTimer GameTimer = new DispatcherTimer();
-        DispatcherTimer movementTimer = new DispatcherTimer();
+        DispatcherTimer projectileTimer = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
-
-            player.GeneratePlayer(Canvas, playerPoint);
-
+            bool isPlayerGenerated = false;
+            if (isPlayerGenerated == false)
+            {
+                player.GeneratePlayer(Canvas, playerPoint);
+                isPlayerGenerated = true;
+            }
             GameTimer.Tick += GameTimer_Tick;
-            GameTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 9000);//fps
+            GameTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);//fps
             GameTimer.Start();
 
-            movementTimer.Tick += MovementTimer_Tick;
-            movementTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);
-            movementTimer.Start();
+            projectileTimer.Tick += MovementTimer_Tick;
+            projectileTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);
+            projectileTimer.Start();
 
             this.Cursor = projectile.LOLHand;
             this.ForceCursor = true;
@@ -47,7 +50,8 @@ namespace LegendofGnome
         private void GameTimer_Tick(object sender, EventArgs e)
         {
 
-            player.Move(player.player_rectangle, Canvas, playerPoint);
+            playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint);
+            Console.WriteLine(playerPoint.ToString());
             
         }
 
@@ -58,6 +62,7 @@ namespace LegendofGnome
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
+           // MessageBox.Show(e.GetPosition(Canvas).ToString());
             Canvas.Children.Remove(projectile.arrow);
             projectile.shoot(Canvas, playerPoint);
             projectile.FindSlope(this, playerPoint);
