@@ -18,13 +18,18 @@ namespace LegendofGnome
 {
     class Projectile
     {
+        public bool isArrow = false;
+        public int i = 1;
+        public int counter = 1;
         public Cursor LOLHand;
         public double Click_X;
         public double Click_Y;
         public double slope_X;
         public double slope_Y;
-        public Rectangle arrow = new Rectangle();
-        public Point arrow_pos = new Point(250, 144);
+        public Rectangle[] arrows = new Rectangle[20];
+        public Array[] arrowXCords = new Array[20];
+        public Array[] arrowYcords = new Array[20];
+        public Point arrow_pos = new Point(0, 0);
         public Projectile()
         {
             FileStream fileStream;//set cursor
@@ -33,16 +38,20 @@ namespace LegendofGnome
         }
         public void shoot(Canvas canvas, Point playerPoint)
         {
-            arrow.Height = 5;
-            arrow.Width = 5;
-            arrow.Fill = Brushes.Black;
-            canvas.Children.Add(arrow);
-            arrow_pos.X = playerPoint.X + 25;
-            arrow_pos.Y = playerPoint.Y + 25;
-            Canvas.SetLeft(arrow, arrow_pos.X);
-            Canvas.SetTop(arrow, arrow_pos.Y);
-
-
+            while (i < counter)
+            {
+                arrows[i] = new Rectangle();
+                arrows[i].Height = 35;
+                arrows[i].Width = 9;
+                arrows[i].Fill = Brushes.Black;
+                canvas.Children.Add(arrows[i]);
+                arrow_pos.X = playerPoint.X + 25;
+                arrow_pos.Y = playerPoint.Y + 25;
+                Canvas.SetLeft(arrows[i], arrow_pos.X);
+                Canvas.SetTop(arrows[i], arrow_pos.Y);
+                i++;
+                isArrow = true;
+            }
         }
 
         public void FindSlope(Window window, Point playerPoint)
@@ -61,12 +70,15 @@ namespace LegendofGnome
 
         public void Move(Canvas canvas)
         {
-            arrow_pos.X = arrow_pos.X - (slope_X / 50);
-            //Console.WriteLine(arrow_pos.X);
-            Canvas.SetLeft(arrow, arrow_pos.X);
-            arrow_pos.Y = arrow_pos.Y - (slope_Y / 50);
-            Canvas.SetTop(arrow, arrow_pos.Y);
-            //Console.WriteLine(arrow_pos.Y);
+            if (isArrow == true)
+            {
+                arrow_pos.X = arrow_pos.X - (slope_X / 50);
+                Console.WriteLine(arrow_pos.X);
+                Canvas.SetLeft(arrows[i], arrow_pos.X);
+                arrow_pos.Y = arrow_pos.Y - (slope_Y / 50);
+                Canvas.SetTop(arrows[i], arrow_pos.Y);
+                //Console.WriteLine(arrow_pos.Y);
+            }
         }
     }
 }
