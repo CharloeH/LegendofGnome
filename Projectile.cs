@@ -26,9 +26,9 @@ namespace LegendofGnome
         public double Click_Y;
         public double slope_X;
         public double slope_Y;
-        public Rectangle[] arrows = new Rectangle[20];
-        public Array[] arrowXCords = new Array[20];
-        public Array[] arrowYcords = new Array[20];
+        public Rectangle arrows = new Rectangle();
+        public Array arrowXCords = new Array[20];
+        public Array arrowYcords = new Array[20];
         public Point arrow_pos = new Point(0, 0);
         public Projectile()
         {
@@ -40,15 +40,15 @@ namespace LegendofGnome
         {
             while (i < counter)
             {
-                arrows[i] = new Rectangle();
-                arrows[i].Height = 35;
-                arrows[i].Width = 9;
-                arrows[i].Fill = Brushes.Black;
-                canvas.Children.Add(arrows[i]);
+                arrows = new Rectangle();
+                arrows.Height = 35;
+                arrows.Width = 9;
+                arrows.Fill = Brushes.Black;
+                canvas.Children.Add(arrows);
                 arrow_pos.X = playerPoint.X + 25;
                 arrow_pos.Y = playerPoint.Y + 25;
-                Canvas.SetLeft(arrows[i], arrow_pos.X);
-                Canvas.SetTop(arrows[i], arrow_pos.Y);
+                Canvas.SetLeft(arrows, arrow_pos.X);
+                Canvas.SetTop(arrows, arrow_pos.Y);
                 i++;
                 isArrow = true;
             }
@@ -74,9 +74,9 @@ namespace LegendofGnome
             {
                 arrow_pos.X = arrow_pos.X - (slope_X / 50);
                 Console.WriteLine(arrow_pos.X);
-                Canvas.SetLeft(arrows[i], arrow_pos.X);
+                Canvas.SetLeft(arrows, arrow_pos.X);
                 arrow_pos.Y = arrow_pos.Y - (slope_Y / 50);
-                Canvas.SetTop(arrows[i], arrow_pos.Y);
+                Canvas.SetTop(arrows, arrow_pos.Y);
                 //Console.WriteLine(arrow_pos.Y);
             }
         }

@@ -22,6 +22,7 @@ namespace LegendofGnome
     public partial class MainWindow : Window
     {
         public Point playerPoint;
+        Map map = new Map();
         public bool isArrow = false;
         Projectile projectile = new Projectile();
         Player player = new Player();
@@ -36,16 +37,18 @@ namespace LegendofGnome
                 Rectangle background = new Rectangle();
                 background.Height = 1000;
                 background.Width = 1300;
-                BitmapImage Map = new BitmapImage(new Uri("Dungeon.png", UriKind.Relative)); //test image (real image needs photoshop)
-                ImageBrush backgroundBrush = new ImageBrush(Map);
-                background.Fill = backgroundBrush;
+                background.Fill = Brushes.Blue;
+                //ImageBrush backgroundBrush = new ImageBrush(Map);
+                //background.Fill = backgroundBrush;
                 Canvas.Children.Add(background);
+                map.DoorGenerate(map.door1, Canvas);
                 isMapGenerated = true;
 
             }
             bool isPlayerGenerated = false;
             if (isPlayerGenerated == false)
             {
+                
                 player.GeneratePlayer(Canvas, playerPoint);
                 isPlayerGenerated = true;
             }
@@ -80,8 +83,7 @@ namespace LegendofGnome
         {
             // MessageBox.Show(e.GetPosition(Canvas).ToString());
             projectile.counter++;
-            Canvas.Children.Remove(projectile.arrows[projectile.i]);
-            MessageBox.Show(projectile.counter.ToString());
+            Canvas.Children.Remove(projectile.arrows);
             projectile.shoot(Canvas, playerPoint);
             projectile.FindSlope(this, playerPoint);
         }

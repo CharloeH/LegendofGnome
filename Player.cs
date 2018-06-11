@@ -22,10 +22,19 @@ namespace LegendofGnome
             {
                 if (playerPoint.Y >= 55)
                 {
+                    
                     Console.WriteLine("w");
                     playerPoint.Y = playerPoint.Y - 10;
 
                 }
+                if(playerPoint.Y <= 55 & playerPoint.X >= 600 & playerPoint.X <= 650)
+                    {
+                    playerPoint.Y -= 10;
+                    if (playerPoint.Y == -50)
+                    {
+                        playerPoint.Y = 1000;
+                    }
+                    }
             }
             if (Keyboard.IsKeyDown(Key.S))
             {
@@ -34,6 +43,16 @@ namespace LegendofGnome
                     Console.WriteLine("s");
                     playerPoint.Y += 10;
                     
+                }
+                if(playerPoint.Y >= 850 & playerPoint.X >= 600 & playerPoint.X <= 650)
+                {
+                    playerPoint.Y += 10;
+                    {
+                        if(playerPoint.Y == 1050)
+                        {
+                            playerPoint.Y = 0;
+                        }
+                    }
                 }
             }
             if (Keyboard.IsKeyDown(Key.A))
