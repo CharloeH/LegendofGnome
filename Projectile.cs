@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,67 +18,43 @@ namespace LegendofGnome
 {
     class Projectile
     {
-        public bool isArrow = false;
-        public int i = 1;
-        public int counter = 1;
-        public Cursor LOLHand;
-        public double Click_X;
-        public double Click_Y;
-        public double slope_X;
-        public double slope_Y;
-        public Rectangle arrows = new Rectangle();
-        public Array arrowXCords = new Array[20];
-        public Array arrowYcords = new Array[20];
-        public Point arrow_pos = new Point(0, 0);
-        public Projectile()
+        public double speed_X;
+        public double speed_Y;
+        private Canvas canvas;
+        public Rectangle projectile;
+        public Point arrow_pos = new Point(250, 144);
+
+        public Projectile(Canvas c, Window window, Point playerPoint)
         {
-            FileStream fileStream;//set cursor
-            fileStream = new FileStream("LOLHand.cur", FileMode.Open);
-            LOLHand = new Cursor(fileStream);
-        }
-        public void shoot(Canvas canvas, Point playerPoint)
-        {
-            while (i < counter)
-            {
-                arrows = new Rectangle();
-                arrows.Height = 35;
-                arrows.Width = 9;
-                arrows.Fill = Brushes.Black;
-                canvas.Children.Add(arrows);
-                arrow_pos.X = playerPoint.X + 25;
-                arrow_pos.Y = playerPoint.Y + 25;
-                Canvas.SetLeft(arrows, arrow_pos.X);
-                Canvas.SetTop(arrows, arrow_pos.Y);
-                i++;
-                isArrow = true;
-            }
+            canvas = c;
+            projectile = new Rectangle();
+            projectile.Height = 5;
+            projectile.Width = 5;
+            projectile.Fill = Brushes.Black;
+            canvas.Children.Add(projectile);
+            FindSlope(window);
+            Canvas.SetLeft(this.projectile, playerPoint.X + 25);
+            Canvas.SetTop(this.projectile, playerPoint.Y + 25);
         }
 
-        public void FindSlope(Window window, Point playerPoint)
+        public void FindSlope(Window window)
         {
-            double player_X = playerPoint.X;
-            double player_Y = playerPoint.Y;
-
-            Click_X = Mouse.GetPosition(window).X;
-            Click_Y = Mouse.GetPosition(window).Y;
+            double Click_X = Mouse.GetPosition(window).X - 500;//500 assumes map size is 1000 high
+            double Click_Y = Mouse.GetPosition(window).Y - 400;//400 assumes map size is 800 high
             //MessageBox.Show(Click_X.ToString() + " " + Click_Y.ToString());
 
-            slope_Y = (player_Y - Click_Y);
-            slope_X = (player_X - Click_X);
-            //MessageBox.Show(slope_Y.ToString() + " " + slope_X.ToString());
+            double angle = Math.Atan2(Click_Y, Click_X);
+            //find the length of lines on preset circle that coresponds with the angle.(changing circle width changes speed of projectiles)
+            speed_X = Math.Sin(angle) * 10; //sin(angle) = x/100 * 100 = x
+            speed_Y = Math.Cos(angle) * 10; //cos(angle) = y/100 * 100 = y
         }
 
-        public void Move(Canvas canvas)
+        public void move()
         {
-            if (isArrow == true)
-            {
-                arrow_pos.X = arrow_pos.X - (slope_X / 50);
-                Console.WriteLine(arrow_pos.X);
-                Canvas.SetLeft(arrows, arrow_pos.X);
-                arrow_pos.Y = arrow_pos.Y - (slope_Y / 50);
-                Canvas.SetTop(arrows, arrow_pos.Y);
-                //Console.WriteLine(arrow_pos.Y);
-            }
+            double temp_x = Canvas.GetLeft(this.projectile) + speed_Y;
+            Canvas.SetLeft(this.projectile, temp_x);
+            double temp_y = Canvas.GetTop(this.projectile) + speed_X;
+            Canvas.SetTop(this.projectile, temp_y);
         }
     }
 }
