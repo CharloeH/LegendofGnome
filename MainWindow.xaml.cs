@@ -82,10 +82,7 @@ namespace LegendofGnome
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // MessageBox.Show(e.GetPosition(Canvas).ToString());
-            projectile.counter++;
-            Canvas.Children.Remove(projectile.arrows);
-            projectile.shoot(Canvas, playerPoint);
-            projectile.FindSlope(this, playerPoint);
+            projectiles.Add(new Projectile(Canvas, this, playerPoint));
         }
     }
 }
