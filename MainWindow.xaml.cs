@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,11 +23,11 @@ namespace LegendofGnome
     {
         public Point playerPoint;
         Map map = new Map();
-        public bool isArrow = false;
-        Projectile projectile = new Projectile();
+        List<Projectile> projectiles = new List<Projectile>();
         Player player = new Player();
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer projectileTimer = new DispatcherTimer();
+        public cursor LOLHand
         public MainWindow()
         {
             InitializeComponent();
@@ -60,23 +60,25 @@ namespace LegendofGnome
             projectileTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);
             projectileTimer.Start();
 
+            FileStream fileStream;//set cursor
+            fileStream = new FileStream("LOLHand.cur", FileMode.Open);
+            LOLHand = new Cursor(fileStream);
             this.Cursor = projectile.LOLHand;
             this.ForceCursor = true;
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-
             playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint);
             Console.WriteLine(playerPoint.ToString());
-            
         }
 
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
-           
-                projectile.Move(Canvas);
-            
+            for (int i = 0; i < projectiles.Count(); i++)
+            {
+                projectiles[i].move();
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
