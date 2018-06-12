@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,20 +27,15 @@ namespace LegendofGnome
         Player player = new Player();
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer projectileTimer = new DispatcherTimer();
-        public cursor LOLHand
+        
         public MainWindow()
         {
             InitializeComponent();
+            
             bool isMapGenerated = false;
-            if(isMapGenerated == false)
+            if (isMapGenerated == false)
             {
-                Rectangle background = new Rectangle();
-                background.Height = 1000;
-                background.Width = 1300;
-                background.Fill = Brushes.Blue;
-                //ImageBrush backgroundBrush = new ImageBrush(Map);
-                //background.Fill = backgroundBrush;
-                Canvas.Children.Add(background);
+                map.backgroundGenerate(Canvas);
                 map.DoorGenerate(map.door1, Canvas);
                 isMapGenerated = true;
 
@@ -48,7 +43,7 @@ namespace LegendofGnome
             bool isPlayerGenerated = false;
             if (isPlayerGenerated == false)
             {
-                
+
                 player.GeneratePlayer(Canvas, playerPoint);
                 isPlayerGenerated = true;
             }
@@ -60,11 +55,7 @@ namespace LegendofGnome
             projectileTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);
             projectileTimer.Start();
 
-            FileStream fileStream;//set cursor
-            fileStream = new FileStream("LOLHand.cur", FileMode.Open);
-            LOLHand = new Cursor(fileStream);
-            this.Cursor = projectile.LOLHand;
-            this.ForceCursor = true;
+            
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,16 +21,19 @@ namespace LegendofGnome
         public double speed_X;
         public double speed_Y;
         private Canvas canvas;
-        public Rectangle projectile;
+        public Ellipse projectile;
         public Point arrow_pos = new Point(250, 144);
 
         public Projectile(Canvas c, Window window, Point playerPoint)
         {
             canvas = c;
-            projectile = new Rectangle();
-            projectile.Height = 5;
-            projectile.Width = 5;
-            projectile.Fill = Brushes.Black;
+            projectile = new Ellipse();
+            projectile.Height = 20;
+            projectile.Width = 20;
+
+            BitmapImage bitmapBackground = new BitmapImage(new Uri("Shuriken Projectile.png", UriKind.Relative));
+            ImageBrush backgroundBrush = new ImageBrush(bitmapBackground);
+            projectile.Fill = backgroundBrush;
             canvas.Children.Add(projectile);
             FindSlope(window);
             Canvas.SetLeft(this.projectile, playerPoint.X + 25);

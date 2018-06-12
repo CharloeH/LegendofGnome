@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace LegendofGnome
@@ -86,10 +87,13 @@ namespace LegendofGnome
         {
             playerRectangle.Height = 50;
             playerRectangle.Width = 50;
+            BitmapImage bitmapBackground = new BitmapImage(new Uri("Wizard Sprite.png", UriKind.Relative));
+            ImageBrush backgroundBrush = new ImageBrush(bitmapBackground);
+            playerRectangle.Fill = backgroundBrush;
             canvas.Children.Add(playerRectangle);
             Canvas.SetLeft(playerRectangle, playerPoint.X);
             Canvas.SetTop(playerRectangle, playerPoint.Y);
-            playerRectangle.Fill = Brushes.Red;
+            
         }
     }
 
