@@ -22,31 +22,36 @@ namespace LegendofGnome
     public partial class MainWindow : Window
     {
         public Point playerPoint;
+        public Point enemyPoint = new Point(0,100);
+        Enemy enemy = new Enemy();
         Map map = new Map();
-        List<Projectile> projectiles = new List<Projectile>();
         Player player = new Player();
+        List<Projectile> projectiles = new List<Projectile>();
+       
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer projectileTimer = new DispatcherTimer();
         
         public MainWindow()
         {
+           
             InitializeComponent();
-            
-            bool isMapGenerated = false;
-            if (isMapGenerated == false)
+           
+         bool isGenerated = false;
+            if (isGenerated == false)
             {
                 map.backgroundGenerate(Canvas);
-                map.DoorGenerate(map.door1, Canvas);
-                isMapGenerated = true;
+                enemy.enemyGenerate(Canvas, enemyPoint);
 
-            }
-            bool isPlayerGenerated = false;
-            if (isPlayerGenerated == false)
-            {
 
-                player.GeneratePlayer(Canvas, playerPoint);
-                isPlayerGenerated = true;
-            }
+
+
+
+
+                                    map.DoorGenerate(map.door1, Canvas);
+                    player.GeneratePlayer(Canvas, playerPoint);
+                    isGenerated = true;
+                }
+            
             GameTimer.Tick += GameTimer_Tick;
             GameTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);//fps
             GameTimer.Start();
@@ -60,6 +65,8 @@ namespace LegendofGnome
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
+            enemyPoint = enemy.enemyMove(playerPoint, Canvas, enemyPoint);
+            
             playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint);
             Console.WriteLine(playerPoint.ToString());
         }
