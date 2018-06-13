@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +23,13 @@ namespace LegendofGnome
         private Canvas canvas;
         public Ellipse projectile;
         public Point arrow_pos = new Point(250, 144);
+        public Point playerPoint;
+        public bool moving;
 
-        public Projectile(Canvas c, Window window, Point playerPoint)
+        public Projectile(Canvas c, Window window, Point pP)
         {
             canvas = c;
+            playerPoint = pP;
             projectile = new Ellipse();
             projectile.Height = 20;
             projectile.Width = 20;
@@ -38,26 +41,38 @@ namespace LegendofGnome
             FindSlope(window);
             Canvas.SetLeft(this.projectile, playerPoint.X + 25);
             Canvas.SetTop(this.projectile, playerPoint.Y + 25);
+            moving = true;
         }
 
         public void FindSlope(Window window)
         {
-            double Click_X = Mouse.GetPosition(window).X - 500;//500 assumes map size is 1000 high
-            double Click_Y = Mouse.GetPosition(window).Y - 400;//400 assumes map size is 800 high
+            double Click_X = Mouse.GetPosition(window).X - playerPoint.X;
+            double Click_Y = Mouse.GetPosition(window).Y - playerPoint.Y;
             //MessageBox.Show(Click_X.ToString() + " " + Click_Y.ToString());
 
             double angle = Math.Atan2(Click_Y, Click_X);
             //find the length of lines on preset circle that coresponds with the angle.(changing circle width changes speed of projectiles)
-            speed_X = Math.Sin(angle) * 10; //sin(angle) = x/100 * 100 = x
-            speed_Y = Math.Cos(angle) * 10; //cos(angle) = y/100 * 100 = y
+            speed_Y = Math.Sin(angle) * 60; //sin(angle) = x/100 * 100 = x
+            speed_X = Math.Cos(angle) * 60; //cos(angle) = y/100 * 100 = y
+            //Console.WriteLine("speed of projectile " + speed_X + " " + speed_Y);
         }
 
         public void move()
         {
-            double temp_x = Canvas.GetLeft(this.projectile) + speed_Y;
-            Canvas.SetLeft(this.projectile, temp_x);
-            double temp_y = Canvas.GetTop(this.projectile) + speed_X;
-            Canvas.SetTop(this.projectile, temp_y);
+            if (moving)
+            {
+                if (arrow_pos.X >= 50 & arrow_pos.X <= 950 & arrow_pos.Y >= 50 & arrow_pos.Y <= 750)
+                {
+                    arrow_pos.X = Canvas.GetLeft(this.projectile) + speed_X;
+                    Canvas.SetLeft(this.projectile, arrow_pos.X);
+                    arrow_pos.Y = Canvas.GetTop(this.projectile) + speed_Y;
+                    Canvas.SetTop(this.projectile, arrow_pos.Y);
+                }
+                else
+                {
+                    moving = false;
+                }
+            }
         }
     }
 }
