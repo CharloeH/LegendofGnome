@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,36 +22,28 @@ namespace LegendofGnome
     public partial class MainWindow : Window
     {
         public Point playerPoint;
-        public Point enemyPoint = new Point(0,100);
-        Enemy enemy = new Enemy();
+        public Point enemyPoint = new Point(800, 1000);
         Map map = new Map();
         Player player = new Player();
         List<Projectile> projectiles = new List<Projectile>();
-       
+        List<Enemy> enemies = new List<Enemy>();
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer projectileTimer = new DispatcherTimer();
-        
+
         public MainWindow()
         {
-           
             InitializeComponent();
-           
-         bool isGenerated = false;
+
+            bool isGenerated = false;
             if (isGenerated == false)
             {
                 map.backgroundGenerate(Canvas);
-                enemy.enemyGenerate(Canvas, enemyPoint);
+                enemies.Add(new Enemy(Canvas, enemyPoint));
+                map.DoorGenerate(map.door1, Canvas);
+                player.GeneratePlayer(Canvas, playerPoint);
+                isGenerated = true;
+            }
 
-
-
-
-
-
-                                    map.DoorGenerate(map.door1, Canvas);
-                    player.GeneratePlayer(Canvas, playerPoint);
-                    isGenerated = true;
-                }
-            
             GameTimer.Tick += GameTimer_Tick;
             GameTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);//fps
             GameTimer.Start();
@@ -59,16 +51,20 @@ namespace LegendofGnome
             projectileTimer.Tick += MovementTimer_Tick;
             projectileTimer.Interval = new TimeSpan(0, 0, 0, 0, 1000 / 60);
             projectileTimer.Start();
-
-            
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            enemyPoint = enemy.enemyMove(playerPoint, Canvas, enemyPoint);
-            
-            playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint);
-            Console.WriteLine(playerPoint.ToString());
+            for (int i = 0; i < projectiles.Count(); i++)
+            {
+                try
+                {
+                    enemyPoint = enemies[i].Move(playerPoint, enemyPoint);
+                    playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint);
+                    //Console.WriteLine(playerPoint.ToString());//troubleshooting
+                }
+                catch { }
+            }
         }
 
         private void MovementTimer_Tick(object sender, EventArgs e)
