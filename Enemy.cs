@@ -13,7 +13,7 @@ namespace LegendofGnome
     class Enemy
     {
         
-        
+        public int attackCounter = 0;
         public double Enemy_posY;
         public double Enemy_posX;
         Rectangle enemyRectangle = new Rectangle();
@@ -29,18 +29,15 @@ namespace LegendofGnome
         }
         public Point enemyMove(Point playerPoint, Canvas canvas, Point enemyPoint)
         {
-            Enemy_posX  = enemyPoint.X;
-            Enemy_posY = enemyPoint.Y; ;
-            if (enemyPoint.X <= playerPoint.X)
+           
+            
+            if (enemyPoint.X <= playerPoint.X || enemyPoint.X >= playerPoint.X || enemyPoint.Y <= playerPoint.Y || enemyPoint.Y >= playerPoint.Y)
             {
-                enemyPoint.X += 5;
-                if(enemyPoint.Y - playerPoint.Y == 20 || enemyPoint.Y - playerPoint.Y == -20)
+                if(enemyPoint.X <= playerPoint.X)
                 {
-                    MessageBox.Show("ha!");
+                    enemyPoint.X += 5;
                 }
-                
-            }
-            if(enemyPoint.X >= playerPoint.X)
+                if(enemyPoint.X >= playerPoint.X)
             {
                 enemyPoint.X -= 5;
             }
@@ -52,6 +49,23 @@ namespace LegendofGnome
             {
                 enemyPoint.Y += 5;
             }
+                if((enemyPoint.Y - playerPoint.Y == 20 || enemyPoint.Y - playerPoint.Y == -20) & (enemyPoint.X - playerPoint.Y == 20 || enemyPoint.X - playerPoint.X == -20))
+                {
+                    
+                    attackCounter++;
+                    if(attackCounter == 30)
+                    {
+                    MessageBox.Show("Tag! You're it!");
+                     attackCounter = 0;
+                    }
+                }
+                else
+                {
+                counter == 0;
+                }
+                
+            }
+            
             Update(canvas, enemyPoint);
             return enemyPoint;
            
