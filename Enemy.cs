@@ -12,7 +12,8 @@ namespace LegendofGnome
 {
     class Enemy
     {
-        public int attackCounter = 0;
+        public bool isHit = false;
+        public int attackCounter;
         public int health;
         Rectangle enemyRectangle = new Rectangle();
         public Canvas canvas;
@@ -29,39 +30,48 @@ namespace LegendofGnome
         }
 
         public Point Move(Point playerPoint, Point enemyPoint)
-        {
-            if (enemyPoint.X <= playerPoint.X || enemyPoint.X >= playerPoint.X || enemyPoint.Y <= playerPoint.Y || enemyPoint.Y >= playerPoint.Y)
+        { 
+
+         if((enemyPoint.X <= playerPoint.X + 50 || enemyPoint.X >= playerPoint.X -50) & (enemyPoint.Y <= playerPoint.Y +50 & enemyPoint.Y >= playerPoint.Y -50))
             {
-                if (enemyPoint.X <= playerPoint.X)
+                isHit = true;
+                if (isHit == true)
                 {
-                    enemyPoint.X += 5;
-                }
-                if (enemyPoint.X >= playerPoint.X)
-                {
-                    enemyPoint.X -= 5;
-                }
-                if (enemyPoint.Y >= playerPoint.Y)
-                {
-                    enemyPoint.Y -= 5;
-                }
-                if (enemyPoint.Y <= playerPoint.Y)
-                {
-                    enemyPoint.Y += 5;
-                }
-                if ((enemyPoint.Y - playerPoint.Y == 20 || enemyPoint.Y - playerPoint.Y == -20) & (enemyPoint.X - playerPoint.Y == 20 || enemyPoint.X - playerPoint.X == -20))
-                {
+                    //MessageBox.Show("when removed rito banner of command but not irelia");            
+
                     attackCounter++;
-                    if (attackCounter == 30)
+                    Console.WriteLine(attackCounter);
+                    if (attackCounter == 90)
                     {
-                        MessageBox.Show("Tag! You're it!");
+                        MessageBox.Show("ur mum big gay");
                         attackCounter = 0;
                     }
                 }
-                else
-                {
-                    attackCounter = 0;
-                }
             }
+           
+           
+            
+
+                if (enemyPoint.X <= playerPoint.X - 50)
+                {
+                    enemyPoint.X += 5;
+                }
+                if (enemyPoint.X >= playerPoint.X + 50)
+                {
+                    enemyPoint.X -= 5;
+                }
+                if (enemyPoint.Y >= playerPoint.Y + 50)
+                {
+                    enemyPoint.Y -= 5;
+                }
+                if (enemyPoint.Y <= playerPoint.Y - 50)
+                {
+                    enemyPoint.Y += 5;
+                }
+               
+
+            
+        
             Canvas.SetLeft(enemyRectangle, enemyPoint.X);
             Canvas.SetTop(enemyRectangle, enemyPoint.Y);
             return enemyPoint;
