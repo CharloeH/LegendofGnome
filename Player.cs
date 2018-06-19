@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +16,8 @@ namespace LegendofGnome
     {
         
         public Rectangle playerRectangle = new Rectangle();
-
-        public Point Move(Rectangle playerRectangle, Canvas canvas, Point playerPoint)
+         Map map = new Map();
+        public Point Move(Rectangle playerRectangle, Canvas canvas, Point playerPoint, bool isRoom1, bool isRoom2, bool isRoom3)
         {
             if (Keyboard.IsKeyDown(Key.W))
             {
@@ -28,33 +28,41 @@ namespace LegendofGnome
                     playerPoint.Y = playerPoint.Y - 10;
 
                 }
-                if(playerPoint.Y <= 55 & playerPoint.X >= 600 & playerPoint.X <= 650)
+                if (isRoom1 == true)
+                {
+                    if (playerPoint.Y <= 55 & playerPoint.X >= 450 & playerPoint.X <= 550)
                     {
-                    playerPoint.Y -= 10;
-                    if (playerPoint.Y == -50)
-                    {
-                        playerPoint.Y = 1000;
+                       // MessageBox.Show("wrong!");
+                        playerPoint.Y -= 10;
+                        if (playerPoint.Y == -50)
+                        {
+                            playerPoint.Y = 1000;
+                        }
                     }
-                    }
+                }
             }
             if (Keyboard.IsKeyDown(Key.S))
             {
-                if (playerPoint.Y <= 850)
+                if (playerPoint.Y <= 860)
                 {
                     Console.WriteLine("s");
                     playerPoint.Y += 10;
                     
                 }
-                if(playerPoint.Y >= 850 & playerPoint.X >= 600 & playerPoint.X <= 650)
+               else if (isRoom1 == true)
                 {
-                    playerPoint.Y += 10;
+                    if (playerPoint.Y >= 850 & playerPoint.X >= 450 & playerPoint.X <= 550)
                     {
-                        if(playerPoint.Y == 1050)
+                        playerPoint.Y += 10;
                         {
-                            playerPoint.Y = 0;
+                            if (playerPoint.Y == 1050)
+                            {
+                                playerPoint.Y = 0;
+                            }
                         }
                     }
                 }
+                
             }
             if (Keyboard.IsKeyDown(Key.A))
             {
@@ -66,7 +74,7 @@ namespace LegendofGnome
             }
             if (Keyboard.IsKeyDown(Key.D))
             {
-                if (playerPoint.X <= 1170)
+                if (playerPoint.X <= 880)
                 {
                     Console.WriteLine("d");
                     playerPoint.X += 10;
