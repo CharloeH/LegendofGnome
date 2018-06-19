@@ -14,9 +14,13 @@ namespace LegendofGnome
     {
         public bool isHit = false;
         public int attackCounter;
+        public int respawnCounter;
         public int health;
-        Rectangle enemyRectangle = new Rectangle();
+        public int maxHealth = 10;
+        public Rectangle enemyRectangle = new Rectangle();
         public Canvas canvas;
+        public bool isEnemy;
+
         public Enemy(Canvas c, Point EnemyPoint)
         {
             canvas = c;
@@ -26,31 +30,30 @@ namespace LegendofGnome
             enemyRectangle.Width = 50;
             enemyRectangle.Fill = Brushes.Red;
             canvas.Children.Add(enemyRectangle);
-            health = 10;
+            health = maxHealth;
+            isEnemy = true;
         }
 
         public Point Move(Point playerPoint, Point enemyPoint)
-        { 
-
-         if((enemyPoint.X <= playerPoint.X + 50 || enemyPoint.X >= playerPoint.X -50) & (enemyPoint.Y <= playerPoint.Y +50 & enemyPoint.Y >= playerPoint.Y -50))
+        {
+            if (isEnemy)
             {
-                isHit = true;
-                if (isHit == true)
+                if ((enemyPoint.X <= playerPoint.X + 50 || enemyPoint.X >= playerPoint.X - 50) & (enemyPoint.Y <= playerPoint.Y + 50 & enemyPoint.Y >= playerPoint.Y - 50))
                 {
-                    //MessageBox.Show("when removed rito banner of command but not irelia");            
-
-                    attackCounter++;
-                    Console.WriteLine(attackCounter);
-                    if (attackCounter == 90)
+                    isHit = true;
+                    if (isHit == true)
                     {
-                        MessageBox.Show("ur mum big gay");
-                        attackCounter = 0;
+                        //MessageBox.Show("when removed rito banner of command but not irelia");            
+
+                        attackCounter++;
+                        //Console.WriteLine(attackCounter);
+                        if (attackCounter == 90)
+                        {
+                            MessageBox.Show("ur mum big gay");
+                            attackCounter = 0;
+                        }
                     }
                 }
-            }
-           
-           
-            
 
                 if (enemyPoint.X <= playerPoint.X - 50)
                 {
@@ -68,12 +71,24 @@ namespace LegendofGnome
                 {
                     enemyPoint.Y += 5;
                 }
-               
-
-            
-        
-            Canvas.SetLeft(enemyRectangle, enemyPoint.X);
-            Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+                Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+                Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+            }
+            else
+            {
+                respawnCounter++;
+                //Console.WriteLine(attackCounter);
+                if (respawnCounter == 300)
+                {
+                    MessageBox.Show("i never die");
+                    respawnCounter = 0;
+                    Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+                    Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+                    canvas.Children.Add(enemyRectangle);
+                    isEnemy = true;
+                    health = maxHealth;
+                }
+            }
             return enemyPoint;
         }
 
@@ -82,13 +97,18 @@ namespace LegendofGnome
             //Melee melee = new Melee(canvas);
         }
 
-        public void hit()
+        public bool hit()
         {
+            bool temp = false;
             health--;
             if (health == 0)
             {
+                temp = true;
                 canvas.Children.Remove(this.enemyRectangle);
+                isEnemy = false;
             }
+            Console.WriteLine("enemy health: " + health);
+            return temp;
         }
     }
 }
