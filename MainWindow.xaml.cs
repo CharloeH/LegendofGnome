@@ -21,11 +21,22 @@ namespace LegendofGnome
     /// </summary>
     public partial class MainWindow : Window
     {
-        public bool isRoom1 = false;
+        public bool isRoom1 = true;
         public bool isRoom2 = false;
         public bool isRoom3 = false;
         public Point playerPoint = new Point(500, 500);
-        public enum RoomNumber { room1, room2, room3, none }
+        public Random mapRandom = new Random();
+        public Rectangle door1 = new Rectangle();
+        public Rectangle door2 = new Rectangle();
+        public Rectangle door3 = new Rectangle();
+        public Rectangle wallTop1 = new Rectangle();
+        public Rectangle wallTop2 = new Rectangle();
+        public Rectangle wallBot1 = new Rectangle();
+        public Rectangle wallBot2 = new Rectangle();
+        public Rectangle wallLeft1 = new Rectangle();
+        public Rectangle wallLeft2 = new Rectangle();
+        public Rectangle wallRight1 = new Rectangle();
+        public Rectangle wallRight2 = new Rectangle();
         public Point enemyPoint = new Point(800, 1000);
         Map map = new Map();
         Player player = new Player();
@@ -33,15 +44,15 @@ namespace LegendofGnome
         List<Enemy> enemies = new List<Enemy>();
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer projectileTimer = new DispatcherTimer();
-        public RoomNumber roomNumber;
+
         public MainWindow()
         {
             InitializeComponent();
-            map.roomNumber = RoomNumber.none;
+
             bool isGenerated = false;
             if (isGenerated == false)
             {
-                map.MapGenerate(map.door1,Canvas, isRoom1);
+                map.MapGenerate(Canvas, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
                 enemies.Add(new Enemy(Canvas, enemyPoint));
                 player.GeneratePlayer(Canvas, playerPoint);
                 isGenerated = true;
@@ -58,13 +69,13 @@ namespace LegendofGnome
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            map.roomGenerate(isRoom1, isRoom2, isRoom3);
+            map.roomGenerate(isRoom1, isRoom2, isRoom3, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
             for (int i = 0; i < projectiles.Count(); i++)
             {
                 try
                 {
                     //enemyPoint = enemies[i].Move(playerPoint, enemyPoint);
-                    playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint, isRoom1, isRoom2, isRoom3);
+                    playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint, isRoom1, isRoom2, isRoom3, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
                     Console.WriteLine(playerPoint.ToString());//troubleshooting
                 }
                 catch { }
@@ -73,46 +84,109 @@ namespace LegendofGnome
 
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
+
             
-           
-           
-           for (int i = 0; i < projectiles.Count(); i++)
-            {
-                projectiles[i].move();
-            }
+                if (playerPoint.X >= 350 & playerPoint.X <= 450)
+                {
+                if (playerPoint.Y <= 50 & Keyboard.IsKeyDown(Key.W))
+                    {
+                       
+                        playerPoint.Y -= 10;
+                        if (playerPoint.Y <= 0)
+                        {
+                            playerPoint.Y = 750;
+                            if (isRoom1 == true)
+                            {
+
+
+                                isRoom1 = false;
+                                isRoom2 = true;
+                                isRoom3 = false;
+
+                                map.room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                    wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+
+                                return;
+                            }
+                            if (isRoom2 == true)
+                            {
+                                isRoom1 = false;
+                                isRoom2 = false;
+                                isRoom3 = true;
+                                
+                                map.room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                    wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                                return;
+                            }
+                            
+                        }
+
+                    }
+                    if(playerPoint.Y >= 700 & Keyboard.IsKeyDown(Key.S))
+                    {
+                    if (isRoom2 == true)
+                        {
+                        playerPoint.Y = 55;
+                            isRoom1 = true;
+                            isRoom2 = false;
+                            isRoom3 = false;
+
+                            map.room1Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1, 
+                            wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            return;
+                    }
+                    if (isRoom3 == true)
+                    {
+                        playerPoint.Y = 55;
+                        isRoom1 = false;
+                        isRoom2 = true;
+                        isRoom3 = false;
+                        map.room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                        return;
+                    }
+                }
+                }
+                for (int i = 0; i < projectiles.Count(); i++)
+                {
+                    projectiles[i].move();
+                }
+            
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-          
-           
+
+
             // MessageBox.Show(e.GetPosition(Canvas).ToString());
-           projectiles.Add(new Projectile(Canvas, this, playerPoint));
+            projectiles.Add(new Projectile(Canvas, this, playerPoint));
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Keyboard.IsKeyDown(Key.C))
-            {
-                isRoom1 = true;
-                isRoom2 = false;
-                isRoom3 = false;
-                //MessageBox.Show(map.roomNumber.ToString());
-            }
-            if (Keyboard.IsKeyDown(Key.X))
-            {
-                isRoom1 = false;
-                isRoom2 = true;
-                isRoom3 = false;
-               // MessageBox.Show(map.roomNumber.ToString());
-            }
-            if (Keyboard.IsKeyDown(Key.Z))
-            {
-                isRoom1 = false;
-                isRoom2 = false;
-                isRoom3 = true;
-               // MessageBox.Show(map.roomNumber.ToString());
+            
+                if (Keyboard.IsKeyDown(Key.C))
+                {
+                    isRoom1 = true;
+                    isRoom2 = false;
+                    isRoom3 = false;
+                    //MessageBox.Show(map.roomNumber.ToString());
+                }
+                if (Keyboard.IsKeyDown(Key.X))
+                {
+                    isRoom1 = false;
+                    isRoom2 = true;
+                    isRoom3 = false;
+                    // MessageBox.Show(map.roomNumber.ToString());
+                }
+                if (Keyboard.IsKeyDown(Key.Z))
+                {
+                    isRoom1 = false;
+                    isRoom2 = false;
+                    isRoom3 = true;
+                    // MessageBox.Show(map.roomNumber.ToString());
+                }
             }
         }
     }
-}
+
