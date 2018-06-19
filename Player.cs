@@ -14,61 +14,71 @@ namespace LegendofGnome
 {
     class Player
     {
-      
-      
-        
         public Rectangle playerRectangle = new Rectangle();
         Map map = new Map();
+
         public Point Move(Rectangle playerRectangle, Canvas canvas, Point playerPoint, bool isRoom1, bool isRoom2, bool isRoom3, Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
         {
             if (Keyboard.IsKeyDown(Key.W))
             {
                 if (playerPoint.Y >= 50)
                 {
-
-                    Console.WriteLine("w");
+                    //Console.WriteLine("w");
                     playerPoint.Y = playerPoint.Y - 10;
-
                 }
-               
-                
+                if (isRoom1 == true)
+                {
+                    if (playerPoint.Y <= 55 & playerPoint.X >= 450 & playerPoint.X <= 550)
+                    {
+                        //MessageBox.Show("wrong!");
+                        playerPoint.Y -= 10;
+                        if (playerPoint.Y == -50)
+                        {
+                            playerPoint.Y = 1000;
+                        }
+                    }
+                }
             }
             if (Keyboard.IsKeyDown(Key.S))
             {
                 if (playerPoint.Y <= 700)
                 {
-                   
+                    //Console.WriteLine("s");
                     playerPoint.Y += 10;
-
                 }
-                
-                
+                else if (isRoom1 == true)
+                {
+                    if (playerPoint.Y >= 850 & playerPoint.X >= 450 & playerPoint.X <= 550)
+                    {
+                        playerPoint.Y += 10;
+                        {
+                            if (playerPoint.Y == 1050)
+                            {
+                                playerPoint.Y = 0;
+                            }
+                        }
+                    }
+                }
             }
             if (Keyboard.IsKeyDown(Key.A))
             {
-                if (playerPoint.X >= 50)
+                if (playerPoint.X >= 60)
                 {
-                    Console.WriteLine("a");
+                    //Console.WriteLine("a");
                     playerPoint.X -= 10;
                 }
             }
             if (Keyboard.IsKeyDown(Key.D))
             {
-                if (playerPoint.X <= 700)
+                if (playerPoint.X <= 880)
                 {
-                    
+                    //Console.WriteLine("d");
                     playerPoint.X += 10;
                 }
             }
-            Update(playerRectangle, canvas, playerPoint);
-            return playerPoint;
-        }
-
-        public void Update(Rectangle playerRectangle, Canvas canvas, Point playerPoint)
-        {
             Canvas.SetLeft(playerRectangle, playerPoint.X);
             Canvas.SetTop(playerRectangle, playerPoint.Y);
-
+            return playerPoint;
         }
 
         public void GeneratePlayer(Canvas canvas, Point playerPoint)
@@ -81,7 +91,6 @@ namespace LegendofGnome
             canvas.Children.Add(playerRectangle);
             Canvas.SetLeft(playerRectangle, playerPoint.X);
             Canvas.SetTop(playerRectangle, playerPoint.Y);
-
         }
     }
 
