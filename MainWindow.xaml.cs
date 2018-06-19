@@ -21,7 +21,11 @@ namespace LegendofGnome
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Point playerPoint;
+        public bool isRoom1 = false;
+        public bool isRoom2 = false;
+        public bool isRoom3 = false;
+        public Point playerPoint = new Point(500, 500);
+        public enum RoomNumber { room1, room2, room3, none }
         public Point enemyPoint = new Point(800, 1000);
         Map map = new Map();
         Player player = new Player();
@@ -29,17 +33,16 @@ namespace LegendofGnome
         List<Enemy> enemies = new List<Enemy>();
         DispatcherTimer GameTimer = new DispatcherTimer();
         DispatcherTimer projectileTimer = new DispatcherTimer();
-
+        public RoomNumber roomNumber;
         public MainWindow()
         {
             InitializeComponent();
-
+            map.roomNumber = RoomNumber.none;
             bool isGenerated = false;
             if (isGenerated == false)
             {
-                map.backgroundGenerate(Canvas);
+                map.MapGenerate(map.door1,Canvas, isRoom1);
                 enemies.Add(new Enemy(Canvas, enemyPoint));
-                map.DoorGenerate(map.door1, Canvas);
                 player.GeneratePlayer(Canvas, playerPoint);
                 isGenerated = true;
             }
@@ -55,13 +58,14 @@ namespace LegendofGnome
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
+            map.roomGenerate(isRoom1, isRoom2, isRoom3);
             for (int i = 0; i < projectiles.Count(); i++)
             {
                 try
                 {
-                    enemyPoint = enemies[i].Move(playerPoint, enemyPoint);
-                    playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint);
-                    //Console.WriteLine(playerPoint.ToString());//troubleshooting
+                    //enemyPoint = enemies[i].Move(playerPoint, enemyPoint);
+                    playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint, isRoom1, isRoom2, isRoom3);
+                    Console.WriteLine(playerPoint.ToString());//troubleshooting
                 }
                 catch { }
             }
@@ -69,7 +73,10 @@ namespace LegendofGnome
 
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < projectiles.Count(); i++)
+            
+           
+           
+           for (int i = 0; i < projectiles.Count(); i++)
             {
                 projectiles[i].move();
             }
@@ -77,8 +84,35 @@ namespace LegendofGnome
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
+          
+           
             // MessageBox.Show(e.GetPosition(Canvas).ToString());
-            projectiles.Add(new Projectile(Canvas, this, playerPoint));
+           projectiles.Add(new Projectile(Canvas, this, playerPoint));
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.C))
+            {
+                isRoom1 = true;
+                isRoom2 = false;
+                isRoom3 = false;
+                //MessageBox.Show(map.roomNumber.ToString());
+            }
+            if (Keyboard.IsKeyDown(Key.X))
+            {
+                isRoom1 = false;
+                isRoom2 = true;
+                isRoom3 = false;
+               // MessageBox.Show(map.roomNumber.ToString());
+            }
+            if (Keyboard.IsKeyDown(Key.Z))
+            {
+                isRoom1 = false;
+                isRoom2 = false;
+                isRoom3 = true;
+               // MessageBox.Show(map.roomNumber.ToString());
+            }
         }
     }
 }
