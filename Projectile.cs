@@ -57,7 +57,7 @@ namespace LegendofGnome
             //Console.WriteLine("speed of projectile " + speed_X + " " + speed_Y);
         }
 
-        public void move()
+        public bool move()
         {
             if (moving)
             {
@@ -71,8 +71,26 @@ namespace LegendofGnome
                 else
                 {
                     moving = false;
+                    canvas.Children.Remove(this.projectile);
                 }
             }
+            return moving;
+        }
+
+        public bool checkCollision(Point s, Rectangle source)
+        {
+            bool temp = false;
+            Point t = arrow_pos;
+            Ellipse target = projectile;
+
+            if (t.X <= s.X + source.Width & t.Y <= s.Y + source.Height)
+            {
+                if (t.X + target.Width >= s.X & t.Y + target.Height >= s.Y)
+                {
+                    temp = true;
+                }
+            }
+            return temp;
         }
     }
 }
