@@ -13,108 +13,250 @@ namespace LegendofGnome
 {
     class Map
     {
-       
-        public Random mapRandom = new Random();
-        public Point doorPoint = new Point(0,0);
-        public Rectangle door1 = new Rectangle();
-        public Rectangle door2 = new Rectangle();
-        public Rectangle Room1wallTop1 = new Rectangle();
-        public Rectangle Room1wallTop2 = new Rectangle();
-        public Rectangle Room1wallBot1 = new Rectangle();
-        public Rectangle Room1wallBot2 = new Rectangle();
-        public Rectangle Room1wallLeft = new Rectangle();
-        public Rectangle Room1wallRight = new Rectangle();
-        public Point wallPoint = new Point(0,0);
 
-        public MainWindow.RoomNumber roomNumber;
         
-        public void MapGenerate(Rectangle door1, Canvas canvas, bool isRoom1)
+        public Point wallPoint = new Point(0, 0);
+
+        public Point doorPoint = new Point(0, 0);
+
+        public void MapGenerate(Canvas canvas, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallBot1, Rectangle wallBot2, Rectangle door1, Rectangle door2, Rectangle door3 )
+        {
+
+            canvas.Children.Add(wallLeft1);
+            canvas.Children.Add(wallTop1);
+
+            canvas.Children.Add(wallLeft2);
+            canvas.Children.Add(wallBot1);
+
+            canvas.Children.Add(wallRight1);
+            canvas.Children.Add(wallTop2);
+
+            canvas.Children.Add(wallRight2);
+            canvas.Children.Add(wallBot2);
+
+            canvas.Children.Add(door3);
+            canvas.Children.Add(door1);
+            canvas.Children.Add(door2);
+
+          
+
+
+            
+
+
+            
+
+
+           
+
+        }
+        public void room1Generate(Rectangle door1, Rectangle door2, Rectangle door3, 
+            Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, 
+            Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
+        {
+            wallLeft1.Fill = Brushes.Black;
+            wallLeft1.Height = 350;
+            wallLeft1.Width = 50;
+            Canvas.SetLeft(wallLeft1, wallPoint.X);
+            Canvas.SetTop(wallLeft1, wallPoint.Y + 50);
+
+            wallTop1.Fill = Brushes.Black;
+            wallTop1.Height = 50;
+            wallTop1.Width = 350;
+
+
+            wallLeft2.Fill = Brushes.Black;
+            wallLeft2.Height = 350;
+            wallLeft2.Width = 50;
+            Canvas.SetTop(wallLeft2, wallPoint.Y + 400);
+
+            wallBot1.Fill = Brushes.Black;
+            wallBot1.Height = 50;
+            wallBot1.Width = 400;
+            Canvas.SetTop(wallBot1, wallPoint.Y + 750);
+
+
+            wallRight1.Fill = Brushes.Black;
+            wallRight1.Height = 350;
+            wallRight1.Width = 50;
+            Canvas.SetLeft(wallRight1, wallPoint.X + 750);
+            Canvas.SetTop(wallRight1, wallPoint.Y + 50);
+
+            wallTop2.Fill = Brushes.Black;
+            wallTop2.Height = 50;
+            wallTop2.Width = 350;
+            Canvas.SetLeft(wallTop2, wallPoint.X + 450);
+
+
+            wallRight2.Fill = Brushes.Black;
+            wallRight2.Height = 350;
+            wallRight2.Width = 50;
+            Canvas.SetTop(wallRight2, wallPoint.Y + 400);
+            Canvas.SetLeft(wallRight2, wallPoint.X + 750);
+
+            wallBot2.Fill = Brushes.Black;
+            wallBot2.Height = 50;
+            wallBot2.Width = 400;
+            Canvas.SetLeft(wallBot2, wallPoint.X + 400);
+            Canvas.SetTop(wallBot2, wallPoint.Y + 750);
+
+
+            door1.Fill = Brushes.Red;
+            door1.Height = 25;
+            door1.Width = 100;
+            Canvas.SetLeft(door1, doorPoint.X + 350);
+            Canvas.SetTop(door1, doorPoint.Y);
+
+            door2.Fill = Brushes.Transparent;
+            door2.Height = 25;
+            door2.Width = 100;
+            Canvas.SetLeft(door2, doorPoint.X + 350);
+            Canvas.SetTop(door2, doorPoint.Y + 775);
+
+            door3.Fill = Brushes.Transparent;
+        }
+        public void room2Generate(Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
+        {
+            wallLeft1.Width = 300;
+            wallLeft1.Height = 400;
+            wallLeft1.Fill = Brushes.Black;
+            Canvas.SetLeft(wallLeft1, wallPoint.X);
+
+            wallTop1.Fill = Brushes.Black;
+            wallTop1.Width = 350;
+
+            wallLeft2.Fill = Brushes.Black;
+            wallLeft2.Width = 300;
+            wallLeft2.Height = 400;
+            Canvas.SetTop(wallLeft2, wallPoint.Y + 400);
+            
+
+            wallBot1.Fill = Brushes.Black;
+            wallBot1.Width = 350;
+            Canvas.SetTop(wallBot1, wallPoint.Y + 750);
+
+            wallRight1.Width = 300;
+            wallRight1.Height = 350;
+            Canvas.SetLeft(wallRight1, wallPoint.X + 500);
+            Canvas.SetTop(wallRight1, wallPoint.Y + 50);
+            wallRight1.Fill = Brushes.Black;
+            
+            wallTop2.Fill = Brushes.Black;
+            wallTop2.Width = 350;
+            Canvas.SetLeft(wallTop2, wallPoint.X + 450);
+
+
+            wallRight2.Width = 300;
+            wallRight2.Height = 350;
+            Canvas.SetLeft(wallRight2, wallPoint.X + 500);
+            Canvas.SetTop(wallRight2, wallPoint.Y + 400);
+            wallRight2.Fill = Brushes.Black;
+
+            wallBot2.Height = 50;
+            wallBot2.Width = 350;
+            wallBot2.Fill = Brushes.Black;
+            Canvas.SetLeft(wallBot2, wallPoint.X + 450);
+            Canvas.SetTop(wallBot2, wallPoint.Y + 750);
+
+
+            door1.Fill = Brushes.Blue;
+            Canvas.SetLeft(door1, doorPoint.X + 350);
+            Canvas.SetTop(door1, doorPoint.Y);
+
+            door2.Height = 25;
+            door2.Width = 100;
+            door2.Fill = Brushes.Blue;
+            Canvas.SetLeft(door2, doorPoint.X + 350);
+            Canvas.SetTop(door2, doorPoint.Y + 775);
+
+            door3.Fill = Brushes.Transparent;
+        }
+        public void room3Generate(Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
         {
            
-                Room1wallTop1.Height = 50;
-                Room1wallTop1.Width = 450;
-                canvas.Children.Add(Room1wallTop1);
 
-                Room1wallRight.Height = 1000;
-                Room1wallRight.Width = 50;
-                canvas.Children.Add(Room1wallRight);
+           
+            wallLeft1.Fill = Brushes.Black;
+            wallLeft1.Height = 350;
+            wallLeft1.Width = 50;
+            Canvas.SetLeft(wallLeft1, wallPoint.X);
+            Canvas.SetTop(wallLeft1, wallPoint.Y);
 
-                Room1wallLeft.Height = 1000;
-                Room1wallLeft.Width = 50;
-                canvas.Children.Add(Room1wallLeft);
+            wallTop1.Fill = Brushes.Black;
+            wallTop1.Height = 50;
+            wallTop1.Width = 400;
 
-                Room1wallTop2.Height = 50;
-                Room1wallTop2.Width = 450;
-                canvas.Children.Add(Room1wallTop2);
 
-                Room1wallBot1.Height = 50;
-                Room1wallBot1.Width = 450;
-                canvas.Children.Add(Room1wallBot1);
+            wallLeft2.Fill = Brushes.Black;
+            wallLeft2.Height = 350;
+            wallLeft2.Width = 50;
+            Canvas.SetTop(wallLeft2, wallPoint.Y + 450);
 
-                Room1wallBot2.Height = 50;
-                Room1wallBot2.Width = 450;
-                canvas.Children.Add(Room1wallBot2);
+            wallBot1.Fill = Brushes.Black;
+            wallBot1.Height = 50;
+            wallBot1.Width = 350;
+            Canvas.SetTop(wallBot1, wallPoint.Y + 750);
 
-                door1.Height = 25;
-                door1.Width = 100;
-                canvas.Children.Add(door1);
 
-                door2.Height = 25;
-                door2.Width = 100;
-                canvas.Children.Add(door2);
-            
+            wallRight1.Fill = Brushes.Black;
+            wallRight1.Height = 300;
+            wallRight1.Width = 50;
+            Canvas.SetLeft(wallRight1, wallPoint.X + 750);
+            Canvas.SetTop(wallRight1, wallPoint.Y + 50);
+
+            wallTop2.Fill = Brushes.Black;
+            wallTop2.Height = 50;
+            wallTop2.Width = 400;
+            Canvas.SetLeft(wallTop2, wallPoint.X + 400);
+
+
+            wallRight2.Fill = Brushes.Black;
+            wallRight2.Height = 300;
+            wallRight2.Width = 50;
+            Canvas.SetTop(wallRight2, wallPoint.Y + 450);
+            Canvas.SetLeft(wallRight2, wallPoint.X + 750);
+           
+            wallBot2.Fill = Brushes.Black;
+            wallBot2.Height = 50;
+            wallBot2.Width = 350;
+            Canvas.SetLeft(wallBot2, wallPoint.X + 450);
+            Canvas.SetTop(wallBot2, wallPoint.Y + 750);
+
+            door1.Fill = Brushes.Green;
+            door1.Height = 25;
+            door1.Width = 100;
+            Canvas.SetLeft(door1, doorPoint.X + 350);
+            Canvas.SetTop(door1, doorPoint.Y + 775);
+
+            door2.Fill = Brushes.Green;
+            door2.Height = 100;
+            door2.Width = 25;
+            Canvas.SetLeft(door2, doorPoint.X);
+            Canvas.SetTop(door2, doorPoint.Y + 350);
+
+            door3.Fill = Brushes.Green;
+            door3.Height = 100;
+            door3.Width = 25;
+            Canvas.SetLeft(door3, doorPoint.X + 775);
+            Canvas.SetTop(door3, doorPoint.Y + 350);
         }
-        public void room1Generate()
-        {
-            
-            door1.Fill = Brushes.Red;
-            Canvas.SetLeft(door1, doorPoint.X + 450);
-            Canvas.SetTop(door1, doorPoint.Y);
-          
-            door2.Fill = Brushes.Red;
-            Canvas.SetLeft(door2, doorPoint.X + 450);
-            Canvas.SetTop(door2, doorPoint.Y +  940);
 
-            Room1wallTop1.Fill = Brushes.Black;
-
-            Room1wallTop2.Fill = Brushes.Black;
-            Canvas.SetLeft(Room1wallTop2, wallPoint.X + 550);
-
-            Room1wallBot1.Fill = Brushes.Black;
-            Canvas.SetTop(Room1wallBot1, wallPoint.Y + 915);
-
-            Room1wallBot2.Fill = Brushes.Black;
-            Canvas.SetLeft(Room1wallBot2, wallPoint.X + 550);
-            Canvas.SetTop(Room1wallBot2, wallPoint.Y + 915);
-
-            Room1wallLeft.Fill = Brushes.Black;
-
-            Room1wallRight.Fill = Brushes.Black;
-            Canvas.SetLeft(Room1wallLeft, wallPoint.X + 935);
-            
-        }
-        public void roomGenerate(bool isRoom1, bool isRoom2, bool isRoom3)
+        public void roomGenerate(bool isRoom1, bool isRoom2, bool isRoom3, Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
         {
             if (isRoom1 == true)
             {
                 
-                //MessageBox.Show("yay");
-                
-                room1Generate();
+                room1Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
             }
-            if(isRoom2 == true)
+            if (isRoom2 == true)
             {
-                door1.Fill = Brushes.Blue;
-                door2.Fill = Brushes.Blue;
-                //MessageBox.Show("yay2");
-                
-            }
-            if(isRoom3 == true)
-            {
-                door1.Fill = Brushes.Green;
-                door2.Fill = Brushes.Green;
-                //MessageBox.Show("yay3");
+               
+                room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
 
+            }
+            if (isRoom3 == true)
+            {
+                room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
             }
         }
     }
