@@ -37,7 +37,7 @@ namespace LegendofGnome
         public Rectangle wallLeft2 = new Rectangle();
         public Rectangle wallRight1 = new Rectangle();
         public Rectangle wallRight2 = new Rectangle();
-        public Point enemyPoint = new Point(800, 1000);
+        public Point enemyPoint = new Point(1000, 1000);
         Map map = new Map();
         Player player = new Player();
         List<Projectile> projectiles = new List<Projectile>();
@@ -48,12 +48,12 @@ namespace LegendofGnome
         public MainWindow()
         {
             InitializeComponent();
-
             bool isGenerated = false;
             if (isGenerated == false)
             {
                 map.MapGenerate(Canvas, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
                 enemies.Add(new Enemy(Canvas, enemyPoint));
+                Melee melee = new Melee(Canvas, this, playerPoint);
                 player.GeneratePlayer(Canvas, playerPoint);
                 isGenerated = true;
             }
@@ -70,70 +70,68 @@ namespace LegendofGnome
         private void GameTimer_Tick(object sender, EventArgs e)
         {
             map.roomGenerate(isRoom1, isRoom2, isRoom3, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-            for (int i = 0; i < projectiles.Count(); i++)
+
+            for (int i = 0; i < enemies.Count(); i++)
             {
-                try
+                enemyPoint = enemies[i].Move(playerPoint, enemyPoint);
+                if (checkCollision(enemyPoint, playerPoint, enemies[0].enemyRectangle, player.playerRectangle))
                 {
-                    //enemyPoint = enemies[i].Move(playerPoint, enemyPoint);
-                    playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint, isRoom1, isRoom2, isRoom3, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                    Console.WriteLine(playerPoint.ToString());//troubleshooting
+                    //MessageBox.Show("hit");//troubleshooting
                 }
-                catch { }
             }
+
+            playerPoint = player.Move(player.playerRectangle, Canvas, playerPoint, isRoom1, isRoom2, isRoom3, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+            //Console.WriteLine(playerPoint.ToString());//troubleshooting
         }
 
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
-
-            
-                if (playerPoint.X >= 350 & playerPoint.X <= 450)
-                {
+            Canvas.Children.Remove(Melee.)
+            if (playerPoint.X >= 350 & playerPoint.X <= 450)
+            {
                 if (playerPoint.Y <= 50 & Keyboard.IsKeyDown(Key.W))
+                {
+
+                    playerPoint.Y -= 10;
+                    if (playerPoint.Y <= 0)
                     {
-                       
-                        playerPoint.Y -= 10;
-                        if (playerPoint.Y <= 0)
+                        playerPoint.Y = 750;
+                        if (isRoom1 == true)
                         {
-                            playerPoint.Y = 750;
-                            if (isRoom1 == true)
-                            {
-
-
-                                isRoom1 = false;
-                                isRoom2 = true;
-                                isRoom3 = false;
-
-                                map.room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
-                                    wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-
-                                return;
-                            }
-                            if (isRoom2 == true)
-                            {
-                                isRoom1 = false;
-                                isRoom2 = false;
-                                isRoom3 = true;
-                                
-                                map.room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
-                                    wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                                return;
-                            }
-                            
-                        }
-
-                    }
-                    if(playerPoint.Y >= 700 & Keyboard.IsKeyDown(Key.S))
-                    {
-                    if (isRoom2 == true)
-                        {
-                        playerPoint.Y = 55;
-                            isRoom1 = true;
-                            isRoom2 = false;
+                            isRoom1 = false;
+                            isRoom2 = true;
                             isRoom3 = false;
 
-                            map.room1Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1, 
-                            wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            map.room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
                             return;
+                        }
+
+                        if (isRoom2 == true)
+                        {
+                            isRoom1 = false;
+                            isRoom2 = false;
+                            isRoom3 = true;
+
+                            map.room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            return;
+                        }
+                    }
+
+                }
+                if (playerPoint.Y >= 700 & Keyboard.IsKeyDown(Key.S))
+                {
+                    if (isRoom2 == true)
+                    {
+                        playerPoint.Y = 55;
+                        isRoom1 = true;
+                        isRoom2 = false;
+                        isRoom3 = false;
+
+                        map.room1Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                            wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                        return;
                     }
                     if (isRoom3 == true)
                     {
@@ -146,47 +144,74 @@ namespace LegendofGnome
                         return;
                     }
                 }
-                }
-                for (int i = 0; i < projectiles.Count(); i++)
+            }
+
+            for (int i = 0; i < projectiles.Count(); i++)
+            {
+                if (projectiles[i].checkCollision(enemyPoint, enemies[0].enemyRectangle))
                 {
-                    projectiles[i].move();
+                    if (enemies[0].hit())
+                    {
+                        Canvas.Children.Remove(projectiles[i].projectile);
+                    }
                 }
-            
+                if (projectiles[i].move() == false)
+                {
+                    projectiles.Remove(projectiles[i]);
+                }
+            }
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
-
-            // MessageBox.Show(e.GetPosition(Canvas).ToString());
-            projectiles.Add(new Projectile(Canvas, this, playerPoint));
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                projectiles.Add(new Projectile(Canvas, this, playerPoint));
+            }
+            if (Mouse.RightButton == MouseButtonState.Pressed)
+            {
+                Melee melee = new Melee(Canvas, this, playerPoint);
+            }
+            //MessageBox.Show(e.GetPosition(Canvas).ToString());
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            
-                if (Keyboard.IsKeyDown(Key.C))
-                {
-                    isRoom1 = true;
-                    isRoom2 = false;
-                    isRoom3 = false;
-                    //MessageBox.Show(map.roomNumber.ToString());
-                }
-                if (Keyboard.IsKeyDown(Key.X))
-                {
-                    isRoom1 = false;
-                    isRoom2 = true;
-                    isRoom3 = false;
-                    // MessageBox.Show(map.roomNumber.ToString());
-                }
-                if (Keyboard.IsKeyDown(Key.Z))
-                {
-                    isRoom1 = false;
-                    isRoom2 = false;
-                    isRoom3 = true;
-                    // MessageBox.Show(map.roomNumber.ToString());
-                }
+            if (Keyboard.IsKeyDown(Key.C))
+            {
+                isRoom1 = true;
+                isRoom2 = false;
+                isRoom3 = false;
+                //MessageBox.Show(map.roomNumber.ToString());
+            }
+            if (Keyboard.IsKeyDown(Key.X))
+            {
+                isRoom1 = false;
+                isRoom2 = true;
+                isRoom3 = false;
+               // MessageBox.Show(map.roomNumber.ToString());
+            }
+            if (Keyboard.IsKeyDown(Key.Z))
+            {
+                isRoom1 = false;
+                isRoom2 = false;
+                isRoom3 = true;
+               // MessageBox.Show(map.roomNumber.ToString());
             }
         }
-    }
 
+        public bool checkCollision(Point t, Point s, Rectangle target, Rectangle source)
+        {
+            bool temp = false;
+
+            if (t.X <= s.X + source.Width & t.Y <= s.Y + source.Height)
+            {
+                if (t.X + target.Width >= s.X & t.Y + target.Height >= s.Y)
+                {
+                    temp = true;
+                }
+            }
+            return temp;
+        }
+    }
+}
