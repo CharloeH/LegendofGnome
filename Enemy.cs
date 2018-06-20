@@ -156,16 +156,18 @@ namespace LegendofGnome
 
         public bool hit(bool melee)
         {
+            bool temp = false;
             if (health == 0 || melee)
             {
                 kill();
+                temp = true;
             }
             else
             {
                 health--;
             }
             //Console.WriteLine("enemy health: " + health);//troubleshooting
-            return true;
+            return temp;
         }
 
         public void kill()
