@@ -17,7 +17,7 @@ namespace LegendofGnome
         public Rectangle bossSword;
         public Point bossPoint = new Point(300,300);
         int swordLength = 300;
-        int swordWidth = 50;
+        int swordWidth = 100;
         Canvas canvas;
         Window window;
 
@@ -25,6 +25,7 @@ namespace LegendofGnome
         {
             canvas = c;
             window = w;
+            
         }
 
         public void spawnBoss()
@@ -35,51 +36,51 @@ namespace LegendofGnome
             bossRectangle.Width = 100;
             bossRectangle.Fill = Brushes.Magenta;
             canvas.Children.Add(bossRectangle);
-            bossSword.Height = swordLength;
-            bossSword.Width = swordWidth;
+            canvas.Children.Add(bossSword);
+            bossSword.Height = swordWidth;
+            bossSword.Width = swordLength;
             bossSword.Fill = Brushes.Silver;
-            Canvas.SetLeft(bossRectangle, 300);
-            Canvas.SetTop(bossRectangle, 300);
+            Canvas.SetLeft(bossRectangle, 350);
+            Canvas.SetTop(bossRectangle, 350);
             Canvas.SetLeft(bossSword, bossPoint.X + 10);
             Canvas.SetTop(bossSword, bossPoint.Y - 5);
         }
 
-        public void attack()
+        public bool attack(Point playerPoint, Rectangle playerRectangle)
         {
-            if (attackAnimation == 4)
-            {
-                bossRectangle.Width = swordWidth;
-                bossRectangle.Height = swordLength;
-                Canvas.SetLeft(bossSword, bossPoint.X + 50 - swordWidth);
-                Canvas.SetTop(bossSword, bossPoint.Y - 20 - swordLength);
-            }
-            if (attackAnimation == 3)
-            {
-                bossRectangle.Width = swordLength;
-                bossRectangle.Height = swordWidth;
-                Canvas.SetLeft(bossSword, bossPoint.X - 20 - swordLength);
-                Canvas.SetTop(bossSword, bossPoint.Y + 50 + swordWidth);
-            }
-            if (attackAnimation == 2)
-            {
-                bossRectangle.Width = swordWidth;
-                bossRectangle.Height = swordLength;
-                Canvas.SetLeft(bossSword, bossPoint.X + 50 + swordWidth);
-                Canvas.SetTop(bossSword, bossPoint.Y + 100 + swordLength);
-            }
-            if (attackAnimation == 1)
-            {
-                bossRectangle.Width = swordLength;
-                bossRectangle.Height = swordWidth;
-                Canvas.SetLeft(bossSword, bossPoint.X + 100 + swordLength);
-                Canvas.SetTop(bossSword, bossPoint.Y + 50 + swordWidth);
-            }
-            attackAnimation--;
+            //sets the boss to be right in front of you
+            bossPoint.X = playerPoint.X - 300;
+            bossPoint.Y = playerPoint.Y + 20;
+            Canvas.SetLeft(bossRectangle, bossPoint.X);
+            Canvas.SetTop(bossRectangle, bossPoint.Y);
+            Canvas.SetLeft(bossSword, bossPoint.X + 10);
+            Canvas.SetTop(bossSword, bossPoint.Y - 25);
+            //if (checkCollision(playerPoint, playerRectangle))
+            //{
+            //    temp = true;
+            //}
+            return true;
         }
 
-        public void kill()
+        public void youLeftTheRoom()
         {
             canvas.Children.Remove(bossRectangle);
+            canvas.Children.Remove(bossSword);
         }
+
+        //public bool checkCollision(Point s, Rectangle source)
+        //{
+        //    bool temp = false;
+
+        //    if (bossPoint.X + 10 <= s.X + source.Width & bossPoint.Y + 10 <= s.Y + source.Height)
+        //    {
+        //        if (bossPoint.X - 25 + swordLength >= s.X & bossPoint.Y - 25 + swordWidth >= s.Y)
+        //        {
+        //            temp = true;
+        //            MessageBox.Show("test");
+        //        }
+        //    }
+        //    return temp;
+        //}
     }
 }
