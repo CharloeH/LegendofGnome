@@ -29,7 +29,7 @@ namespace LegendofGnome
             healthBar.Height = 25;
             healthBar.Orientation = Orientation.Horizontal;
             canvas.Children.Add(healthBar);
-            Canvas.SetTop(healthBar, 800);
+            Canvas.SetTop(healthBar, 775);
             Canvas.SetLeft(healthBar, 200);
             for (int i = 0; i < maxHealth; i++)
             {
@@ -37,14 +37,14 @@ namespace LegendofGnome
                 health[i].Width = 10;
                 health[i].Height = 25;
                 health[i].Fill = Brushes.Red;
-                health[i].Stroke = Brushes.Black;
+                health[i].Stroke = Brushes.White;
                 healthBar.Children.Add(health[i]);
             }
 
             moneyBag.Foreground = Brushes.Goldenrod;
             moneyBag.Content = "Gold: ";
             canvas.Children.Add(moneyBag);
-            Canvas.SetTop(moneyBag, 800);
+            Canvas.SetTop(moneyBag, 780);
             Canvas.SetLeft(moneyBag, 0);
         }
 
