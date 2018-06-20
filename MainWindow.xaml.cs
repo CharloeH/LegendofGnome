@@ -24,6 +24,8 @@ namespace LegendofGnome
         public bool isRoom1 = true;
         public bool isRoom2 = false;
         public bool isRoom3 = false;
+        public bool isBossRoom = false;
+        public bool isShopRoom = false;
         public Point playerPoint = new Point(500, 500);
         public Random mapRandom = new Random();
         public Rectangle door1 = new Rectangle();
@@ -69,7 +71,7 @@ namespace LegendofGnome
 
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            map.roomGenerate(isRoom1, isRoom2, isRoom3, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+            map.roomGenerate(isRoom1, isRoom2, isRoom3, isBossRoom, isShopRoom, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
 
             for (int i = 0; i < enemies.Count(); i++)
             {
@@ -86,18 +88,19 @@ namespace LegendofGnome
 
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
-            Canvas.Children.Remove(Melee.)
+            //Canvas.Children.Remove();
             if (playerPoint.X >= 350 & playerPoint.X <= 450)
             {
-                if (playerPoint.Y <= 50 & Keyboard.IsKeyDown(Key.W))
+                if (playerPoint.Y <= 60 & Keyboard.IsKeyDown(Key.W))
                 {
 
                     playerPoint.Y -= 10;
                     if (playerPoint.Y <= 0)
                     {
-                        playerPoint.Y = 750;
+                       
                         if (isRoom1 == true)
                         {
+                            playerPoint.Y = 750;
                             isRoom1 = false;
                             isRoom2 = true;
                             isRoom3 = false;
@@ -109,6 +112,7 @@ namespace LegendofGnome
 
                         if (isRoom2 == true)
                         {
+                            playerPoint.Y = 750;
                             isRoom1 = false;
                             isRoom2 = false;
                             isRoom3 = true;
@@ -146,6 +150,76 @@ namespace LegendofGnome
                 }
             }
 
+
+            if (playerPoint.Y >= 350 & playerPoint.Y <= 450)
+            {
+                if (playerPoint.X <= 60 & Keyboard.IsKeyDown(Key.A))
+                {
+                    playerPoint.X -= 10;
+                    if (playerPoint.X <= 0)
+                    {
+
+                        if (isRoom3 == true)
+                        {
+                            playerPoint.X = 755;
+                            isRoom1 = false;
+                            isRoom2 = false;
+                            isRoom3 = false;
+                            isBossRoom = true;
+                            isShopRoom = false;
+                            map.bossRoomGenerate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            return;
+                        }
+                        if (isShopRoom == true)
+                        {
+                            playerPoint.X = 755;
+                            isRoom1 = false;
+                            isRoom2 = false;
+                            isRoom3 = true;
+                            isBossRoom = false;
+                            isShopRoom = false;
+                            map.bossRoomGenerate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            return;
+                        }
+                    }
+                }
+                if (playerPoint.X >= 700 & Keyboard.IsKeyDown(Key.D))
+                {
+                    playerPoint.X += 10;
+                    if (playerPoint.X >= 800)
+                    {
+                        if (isBossRoom == true)
+                        {
+                            playerPoint.X = 25;
+                            isRoom1 = false;
+                            isRoom2 = false;
+                            isRoom3 = true;
+                            isBossRoom = false;
+                            isShopRoom = false;
+                            map.room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            return;
+                        }
+                        if (isRoom3 == true)
+                        {
+                            playerPoint.X = 25;
+                            isRoom1 = false;
+                            isRoom2 = false;
+                            isRoom3 = false;
+                            isBossRoom = false;
+                            isShopRoom = true;
+                            map.shopRoomGeneate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
+                                wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
+                            return;
+                        }
+                    }
+                }
+            }
+                
+            
+
             for (int i = 0; i < projectiles.Count(); i++)
             {
                 if (projectiles[i].checkCollision(enemyPoint, enemies[0].enemyRectangle))
@@ -182,21 +256,45 @@ namespace LegendofGnome
                 isRoom1 = true;
                 isRoom2 = false;
                 isRoom3 = false;
-                //MessageBox.Show(map.roomNumber.ToString());
+                isBossRoom = false;
+                isShopRoom = false;
+              
             }
             if (Keyboard.IsKeyDown(Key.X))
             {
                 isRoom1 = false;
                 isRoom2 = true;
                 isRoom3 = false;
-               // MessageBox.Show(map.roomNumber.ToString());
+                isBossRoom = false;
+                isShopRoom = false;
+               
             }
             if (Keyboard.IsKeyDown(Key.Z))
             {
                 isRoom1 = false;
                 isRoom2 = false;
                 isRoom3 = true;
-               // MessageBox.Show(map.roomNumber.ToString());
+                isBossRoom = false;
+                isShopRoom = false;
+               
+            }
+            if (Keyboard.IsKeyDown(Key.V))
+            {
+                isRoom1 = false;
+                isRoom2 = false;
+                isRoom3 = false;
+                isBossRoom = true;
+                isShopRoom = false;
+
+            }
+            if (Keyboard.IsKeyDown(Key.B))
+            {
+                isRoom1 = false;
+                isRoom2 = false;
+                isRoom3 = false;
+                isBossRoom = false;
+                isShopRoom = true;
+
             }
         }
 
