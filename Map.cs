@@ -13,17 +13,15 @@ namespace LegendofGnome
 {
     class Map
     {
-
-        
         public Point wallPoint = new Point(0, 0);
-
         public Point doorPoint = new Point(0, 0);
+
+        //Generates all the rectangle for all the rooms
 
         public void MapGenerate(Canvas canvas, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallRight1, 
             Rectangle wallRight2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallBot1, 
             Rectangle wallBot2, Rectangle door1, Rectangle door2, Rectangle door3 )
         {
-
             canvas.Children.Add(wallLeft1);
             canvas.Children.Add(wallTop1);
 
@@ -39,18 +37,10 @@ namespace LegendofGnome
             canvas.Children.Add(door3);
             canvas.Children.Add(door1);
             canvas.Children.Add(door2);
-
-
-
-            
-
-
-            
-
-
-           
-
         }
+
+        //Generates the first room by editing the reshaping the rectangles and filling them with diffirent colours
+
         public void room1Generate(Rectangle door1, Rectangle door2, Rectangle door3, 
             Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, 
             Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
@@ -116,6 +106,9 @@ namespace LegendofGnome
 
             door3.Fill = Brushes.Transparent;
         }
+
+        //Generates the second room by editing the reshaping the rectangles and filling them with diffirent colours
+
         public void room2Generate(Rectangle door1, Rectangle door2, Rectangle door3, 
             Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, 
             Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
@@ -128,15 +121,16 @@ namespace LegendofGnome
             wallTop1.Fill = Brushes.Black;
             wallTop1.Width = 350;
 
+
             wallLeft2.Fill = Brushes.Black;
             wallLeft2.Width = 300;
             wallLeft2.Height = 400;
             Canvas.SetTop(wallLeft2, wallPoint.Y + 400);
             
-
             wallBot1.Fill = Brushes.Black;
             wallBot1.Width = 350;
             Canvas.SetTop(wallBot1, wallPoint.Y + 750);
+
 
             wallRight1.Width = 300;
             wallRight1.Height = 350;
@@ -155,7 +149,6 @@ namespace LegendofGnome
             Canvas.SetLeft(wallRight2, wallPoint.X + 500);
             Canvas.SetTop(wallRight2, wallPoint.Y + 400);
             
-
             wallBot2.Height = 50;
             wallBot2.Width = 350;
             wallBot2.Fill = Brushes.Black;
@@ -177,13 +170,13 @@ namespace LegendofGnome
 
             door3.Fill = Brushes.Transparent;
         }
+        
+        //Generates the second room by editing the reshaping the rectangles and filling them with diffirent colours
+
         public void room3Generate(Rectangle door1, Rectangle door2, Rectangle door3, 
             Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2,
             Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
         {
-           
-
-           
             wallLeft1.Fill = Brushes.Black;
             wallLeft1.Height = 350;
             wallLeft1.Width = 50;
@@ -195,6 +188,7 @@ namespace LegendofGnome
             wallTop1.Width = 400;
             Canvas.SetLeft(wallTop1, wallPoint.X);
             Canvas.SetTop(wallTop1, wallPoint.Y);
+
 
             wallLeft2.Fill = Brushes.Black;
             wallLeft2.Height = 350;
@@ -234,6 +228,7 @@ namespace LegendofGnome
             Canvas.SetLeft(wallBot2, wallPoint.X + 450);
             Canvas.SetTop(wallBot2, wallPoint.Y + 750);
 
+
             door1.Fill = Brushes.Green;
             door1.Height = 25;
             door1.Width = 100;
@@ -252,6 +247,9 @@ namespace LegendofGnome
             Canvas.SetLeft(door3, doorPoint.X + 775);
             Canvas.SetTop(door3, doorPoint.Y + 350);
         }
+
+        //Generates the boss room by editing the reshaping the rectangles and filling them with diffirent colours
+
         public void bossRoomGenerate(Rectangle door1, Rectangle door2, Rectangle door3, 
             Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, 
             Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
@@ -268,11 +266,13 @@ namespace LegendofGnome
             Canvas.SetLeft(wallTop1, wallPoint.X);
             Canvas.SetTop(wallTop1, wallPoint.Y);
 
+
             wallLeft2.Height = 350;
             wallLeft2.Width = 50;
             wallLeft2.Fill = Brushes.DarkRed;
             Canvas.SetLeft(wallLeft2, wallPoint.X);
             Canvas.SetTop(wallLeft2, wallPoint.Y + 400);
+
 
             wallBot1.Height = 50;
             wallBot1.Width = 400;
@@ -291,6 +291,7 @@ namespace LegendofGnome
             wallTop2.Fill = Brushes.DarkRed;
             Canvas.SetLeft(wallTop2, wallPoint.X + 400);
             Canvas.SetTop(wallTop2, wallPoint.Y);
+
 
             wallRight2.Height = 300;
             wallRight2.Width = 50;
@@ -312,8 +313,12 @@ namespace LegendofGnome
             Canvas.SetTop(door1, wallPoint.Y + 350);
 
             door2.Fill = Brushes.Transparent;
+
             door3.Fill = Brushes.Transparent;
         }
+
+        //Generates the shop room by editing the reshaping the rectangles and filling them with diffirent colours
+
         public void shopRoomGeneate(Rectangle door1, Rectangle door2, Rectangle door3,
             Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2,
             Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
@@ -330,6 +335,7 @@ namespace LegendofGnome
             Canvas.SetLeft(wallTop1, wallPoint.X);
             Canvas.SetTop(wallTop1, wallPoint.Y);
 
+
             wallLeft2.Height = 350;
             wallLeft2.Width = 50;
             wallLeft2.Fill = Brushes.DarkBlue;
@@ -342,6 +348,7 @@ namespace LegendofGnome
             Canvas.SetLeft(wallBot1, wallPoint.X);
             Canvas.SetTop(wallBot1, wallPoint.Y + 750);
 
+
             wallRight1.Height = 350;
             wallRight1.Width = 50;
             wallRight1.Fill = Brushes.DarkBlue;
@@ -353,6 +360,7 @@ namespace LegendofGnome
             wallTop2.Fill = Brushes.DarkBlue;
             Canvas.SetLeft(wallTop2, wallPoint.X + 400);
             Canvas.SetTop(wallTop2, wallPoint.Y);
+
 
             wallRight2.Height = 350;
             wallRight2.Width = 50;
@@ -374,8 +382,12 @@ namespace LegendofGnome
             Canvas.SetTop(door1, wallPoint.Y + 350);
 
             door2.Fill = Brushes.Transparent;
+
             door3.Fill = Brushes.Transparent;
         }
+
+        //Generates the rooms with the methods above based on the mainwindow booleans
+
         public void roomGenerate(bool isRoom1, bool isRoom2, bool isRoom3, bool isBossRoom, bool isShopRoom, Rectangle door1, Rectangle door2, Rectangle door3,
             Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2,
             Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
