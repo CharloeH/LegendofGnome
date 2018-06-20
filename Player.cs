@@ -5,161 +5,178 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace LegendofGnome
 {
-    class Player
+    class Enemy
     {
-        public Rectangle playerRectangle = new Rectangle();
-        public Rectangle playerSword = new Rectangle();
-        Map map = new Map();
+        Random random = new Random();
+        public bool isHit = false;
+        public int attackCounter;
         public int attackAnimation = 0;
-        public Point playerPoint;
-        public int maxHealth = 10;
+        public int respawnCounter;
         public int health;
-        public int gold = 0;
+        public int maxHealth = 10;
+        public Point enemyPoint;
+        public Rectangle enemyRectangle = new Rectangle();
+        public Canvas canvas;
+        public Rectangle enemySword = new Rectangle();
+        public bool isEnemy;
+        public bool hitThisAttack;
 
-        public Point Move(Rectangle playerRectangle, Canvas canvas, Point pP, bool isRoom1, bool isRoom2, bool isRoom3, Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
+        public Enemy(Canvas c, Point eP)
         {
-            playerPoint = pP;
-            if (Keyboard.IsKeyDown(Key.W))
-            {
-                if (playerPoint.Y >= 50)
-                {
-                    //Console.WriteLine("w");
-                    playerPoint.Y = playerPoint.Y - 10;
-                }
-                if (isRoom1 == true)
-                {
-                    if (playerPoint.Y <= 55 & playerPoint.X >= 450 & playerPoint.X <= 550)
-                    {
-                        //MessageBox.Show("wrong!");
-                        playerPoint.Y -= 10;
-                        if (playerPoint.Y == -50)
-                        {
-                            playerPoint.Y = 1000;
-                        }
-                    }
-                }
-            }
-            if (Keyboard.IsKeyDown(Key.S))
-            {
-                if (playerPoint.Y <= 700)
-                {
-                    //Console.WriteLine("s");
-                    playerPoint.Y += 10;
-                }
+            canvas = c;
+            enemyPoint = eP;
+            Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+            Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+            Canvas.SetTop(enemySword, enemyPoint.Y + 10);
+            Canvas.SetLeft(enemySword, enemyPoint.X - 5);
+            enemyRectangle.Height = 50;
+            enemyRectangle.Width = 50;
+            enemySword.Height = 20;
+            enemySword.Width = 20;
+            enemySword.Fill = Brushes.DarkGray;
+            enemyRectangle.Fill = Brushes.Red;
+            canvas.Children.Add(enemyRectangle);
+            canvas.Children.Add(enemySword);
+            health = maxHealth;
+            isEnemy = true;
+        }
 
-            }
-            if (Keyboard.IsKeyDown(Key.A))
+        public Point Move(Point playerPoint, Point eP, Rectangle playerRectangle, bool respawn)
+        {
+            enemyPoint = eP;
+            if (isEnemy )
             {
-                if (isRoom2 == true)
-                {
-                    if (playerPoint.X >= 300 & playerPoint.X <= 500)
-                    {
-                        playerPoint.X -= 10;
-                    }
-                }
-                else
-                {
-                    if (playerPoint.X >= 50)
-                    {
-
-                        //Console.WriteLine("a");
-                        playerPoint.X -= 10;
-                    }
-                }
-            }
-            if (Keyboard.IsKeyDown(Key.D))
-            {
-                if (isRoom2 == true)
-                {
-                    if (playerPoint.X >= 300 & playerPoint.X <= 450)
-                    {
-                        playerPoint.X += 10;
-                    }
-                }
-                else
-                {
-                    if (playerPoint.X <= 725)
-                    {
-                        //Console.WriteLine("d");
-                        playerPoint.X += 10;
-                    }
-                }
-            }
-            //if right click
-            if (Mouse.RightButton == MouseButtonState.Pressed)
-            {
-                //and you are attacking, continue
+                //attacks instead of moving
                 if (attackAnimation != 0)
                 {
                     attack();
                 }
-                //otherwise, start.
-                else if (attackAnimation == 0)
+                //if not attacking moves him
+                else
                 {
-                    attackAnimation = 12;
+                    if (checkAttack(enemyPoint, playerPoint, enemyRectangle, playerRectangle))
+                    {
+                        attackCounter++;
+                        //Console.WriteLine(attackCounter);//troubleshooting
+                        if (attackCounter == 15)
+                        {
+                            attackAnimation = 12;
+                            attackCounter = 0;
+                        }
+                    }
+                    //chases the player
+                    if (enemyPoint.X <= playerPoint.X - 25)
+                    {
+                        enemyPoint.X += 5;
+                    }
+                    if (enemyPoint.X >= playerPoint.X + 25)
+                    {
+                        enemyPoint.X -= 5;
+                    }
+                    if (enemyPoint.Y >= playerPoint.Y + 25)
+                    {
+                        enemyPoint.Y -= 5;
+                    }
+                    if (enemyPoint.Y <= playerPoint.Y - 25)
+                    {
+                        enemyPoint.Y += 5;
+                    }
+                    Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+                    Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+                    Canvas.SetLeft(enemySword, enemyPoint.X + 10);
+                    Canvas.SetTop(enemySword, enemyPoint.Y - 5);
                 }
             }
-            //returns sword to resting position when not being swung
-            else if (Mouse.RightButton != MouseButtonState.Pressed)
+
+            //You have the right to an Enemy. If you cannot afford an Enemy, one will be provided for you.
+            else if (respawn == true)
             {
-                Canvas.SetLeft(playerSword, playerPoint.X + 5);
-                Canvas.SetTop(playerSword, playerPoint.Y + 5);
+                respawnCounter++;
+                //Console.WriteLine(attackCounter);//troubleshooting
+                if (respawnCounter == 300)
+                {
+                    //MessageBox.Show("i never die");//troubleshooting
+                    respawnCounter = 0;
+                    canvas.Children.Add(enemyRectangle);
+                    canvas.Children.Add(enemySword);
+                    isEnemy = true;
+                    health = maxHealth;
+                    Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+                    Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+                    Canvas.SetTop(enemySword, enemyPoint.Y + 10);
+                    Canvas.SetLeft(enemySword, enemyPoint.X - 5);
+                }
             }
-            Canvas.SetLeft(playerRectangle, playerPoint.X);
-            Canvas.SetTop(playerRectangle, playerPoint.Y);
-            return playerPoint;
+            return enemyPoint;
         }
 
-        public void GeneratePlayer(Canvas canvas, Point pP)
+        public bool checkAttack(Point t, Point s, Rectangle target, Rectangle source)
         {
-            playerPoint = pP;
-            playerRectangle.Height = 50;
-            playerRectangle.Width = 50;
-            BitmapImage bitmapBackground = new BitmapImage(new Uri("Wizard Sprite.png", UriKind.Relative));
-            ImageBrush backgroundBrush = new ImageBrush(bitmapBackground);
-            playerRectangle.Fill = backgroundBrush;
-            canvas.Children.Add(playerRectangle);
-            canvas.Children.Add(playerSword);
-            playerSword.Height = 20;
-            playerSword.Width = 20;
-            playerSword.Fill = Brushes.DarkGray;
-            Canvas.SetLeft(playerSword, playerPoint.X + 10);
-            Canvas.SetTop(playerSword, playerPoint.Y - 5);
-            Canvas.SetLeft(playerRectangle, playerPoint.X);
-            Canvas.SetTop(playerRectangle, playerPoint.Y);
-            health = maxHealth;
+            bool temp = false;
+            
+            if (t.X <= s.X + source.Width & t.Y <= s.Y + source.Height)
+            {
+                if (t.X + target.Width >= s.X & t.Y + target.Height >= s.Y)
+                {
+                    temp = true;
+                }
+            }
+            return temp;
         }
 
         public void attack()
         {
             if (attackAnimation == 10 || attackAnimation == 11 || attackAnimation == 12)
             {
-                Canvas.SetLeft(playerSword, playerPoint.X + 15);
-                Canvas.SetTop(playerSword, playerPoint.Y - 20);
+                Canvas.SetLeft(enemySword, enemyPoint.X + 15);
+                Canvas.SetTop(enemySword, enemyPoint.Y - 20);
             }
             if (attackAnimation == 7 || attackAnimation == 8 || attackAnimation == 9)
             {
-                Canvas.SetLeft(playerSword, playerPoint.X - 20);
-                Canvas.SetTop(playerSword, playerPoint.Y + 15);
+                Canvas.SetLeft(enemySword, enemyPoint.X - 20);
+                Canvas.SetTop(enemySword, enemyPoint.Y + 15);
             }
-            if (attackAnimation == 4 || attackAnimation == 5 || attackAnimation == 6)
+            if (attackAnimation == 4 || attackAnimation == 5 || attackAnimation ==6)
             {
-                Canvas.SetLeft(playerSword, playerPoint.X + 15);
-                Canvas.SetTop(playerSword, playerPoint.Y + 50);
+                Canvas.SetLeft(enemySword, enemyPoint.X + 15);
+                Canvas.SetTop(enemySword, enemyPoint.Y + 50);
             }
             if (attackAnimation == 1 || attackAnimation == 2 || attackAnimation == 3)
             {
-                Canvas.SetLeft(playerSword, playerPoint.X + 50);
-                Canvas.SetTop(playerSword, playerPoint.Y + 15);
+                Canvas.SetLeft(enemySword, enemyPoint.X + 50);
+                Canvas.SetTop(enemySword, enemyPoint.Y + 15);
             }
             attackAnimation--;
+        }
+
+        public bool hit(bool melee)
+        {
+            bool temp = false;
+            if (health == 0 || melee)
+            {
+                kill();
+                temp = true;
+            }
+            else
+            {
+                health--;
+            }
+            //Console.WriteLine("enemy health: " + health);//troubleshooting
+            return temp;
+        }
+
+        public void kill()
+        {
+            enemyPoint.X = random.Next(50, 799);
+            enemyPoint.Y = random.Next(50, 799);
+            canvas.Children.Remove(this.enemySword);
+            canvas.Children.Remove(this.enemyRectangle);
+            isEnemy = false;
         }
     }
 }
