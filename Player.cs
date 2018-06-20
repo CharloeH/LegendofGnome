@@ -45,35 +45,44 @@ namespace LegendofGnome
                 {
                     //Console.WriteLine("s");
                     playerPoint.Y += 10;
-                }
-                else if (isRoom1 == true)
-                {
-                    if (playerPoint.Y >= 850 & playerPoint.X >= 450 & playerPoint.X <= 550)
-                    {
-                        playerPoint.Y += 10;
-                        {
-                            if (playerPoint.Y == 1050)
-                            {
-                                playerPoint.Y = 0;
-                            }
-                        }
-                    }
-                }
+                }       
+                
             }
             if (Keyboard.IsKeyDown(Key.A))
             {
-                if (playerPoint.X >= 60)
+                if (isRoom2 == true)
                 {
-                    //Console.WriteLine("a");
-                    playerPoint.X -= 10;
+                    if(playerPoint.X >= 300 & playerPoint.X <= 500)
+                    {
+                        playerPoint.X -= 10;
+                    }
+                }
+                else
+                {
+                    if (playerPoint.X >= 50)
+                    {
+
+                        //Console.WriteLine("a");
+                        playerPoint.X -= 10;
+                    }
                 }
             }
             if (Keyboard.IsKeyDown(Key.D))
             {
-                if (playerPoint.X <= 880)
+                if (isRoom2 == true)
                 {
-                    //Console.WriteLine("d");
-                    playerPoint.X += 10;
+                    if (playerPoint.X >= 300 & playerPoint.X <= 450)
+                    {
+                        playerPoint.X += 10;
+                    }
+                }
+                else
+                {
+                    if (playerPoint.X <= 725)
+                    {
+                        //Console.WriteLine("d");
+                        playerPoint.X += 10;
+                    }
                 }
             }
             Canvas.SetLeft(playerRectangle, playerPoint.X);
