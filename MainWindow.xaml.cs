@@ -129,6 +129,7 @@ namespace LegendofGnome
 
         private void MovementTimer_Tick(object sender, EventArgs e)
         {
+          
             if (playerPoint.X >= 350 & playerPoint.X <= 450)
             {
                 if (playerPoint.Y <= 60 & Keyboard.IsKeyDown(Key.W))
@@ -142,11 +143,8 @@ namespace LegendofGnome
                             isRoom1 = false;
                             isRoom2 = true;
                             isRoom3 = false;
-
                             map.room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                            enemies[0].kill();
-                            respawn = false;
                             return;
                         }
                         if (isRoom2 == true)
@@ -155,11 +153,8 @@ namespace LegendofGnome
                             isRoom1 = false;
                             isRoom2 = false;
                             isRoom3 = true;
-
                             map.room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                            enemies[0].kill();
-                            respawn = true;
                             return;
                         }
                     }
@@ -172,11 +167,8 @@ namespace LegendofGnome
                         isRoom1 = true;
                         isRoom2 = false;
                         isRoom3 = false;
-
                         map.room1Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                             wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                        enemies[0].kill();
-                        respawn = true;
                         return;
                     }
                     if (isRoom3 == true)
@@ -187,8 +179,6 @@ namespace LegendofGnome
                         isRoom3 = false;
                         map.room2Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                        enemies[0].kill();
-                        respawn = false;
                         return;
                     }
                 }
@@ -200,7 +190,6 @@ namespace LegendofGnome
                     playerPoint.X -= 10;
                     if (playerPoint.X <= 0)
                     {
-
                         if (isRoom3 == true)
                         {
                             playerPoint.X = 755;
@@ -211,9 +200,6 @@ namespace LegendofGnome
                             isShopRoom = false;
                             map.bossRoomGenerate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                            boss.spawnBoss();
-                            enemies[0].kill();
-                            respawn = false;
                             return;
                         }
                         if (isShopRoom == true)
@@ -226,8 +212,6 @@ namespace LegendofGnome
                             isShopRoom = false;
                             map.bossRoomGenerate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                            enemies[0].kill();
-                            respawn = true;
                             return;
                         }
                     }
@@ -247,9 +231,6 @@ namespace LegendofGnome
                             isShopRoom = false;
                             map.room3Generate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                            enemies[0].kill();
-                            respawn = true;
-                            boss.youLeftTheRoom();
                             return;
                         }
                         if (isRoom3 == true)
@@ -262,8 +243,7 @@ namespace LegendofGnome
                             isShopRoom = true;
                             map.shopRoomGeneate(door1, door2, door3, wallTop1, wallTop2, wallLeft1,
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
-                            enemies[0].kill();
-                            respawn = false;
+
                             return;
                         }
                     }
@@ -289,6 +269,7 @@ namespace LegendofGnome
             }
 
         }
+
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
