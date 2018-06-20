@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,13 +23,14 @@ namespace LegendofGnome
 
         public Boss(Canvas c, Window w)
         {
+            //sets the canvas and window here to match those of MainWindow
             canvas = c;
             window = w;
-            
         }
 
         public void spawnBoss()
         {
+            //creates a boss entity, this runs when you enter a room
             bossRectangle = new Rectangle();
             bossSword = new Rectangle();
             bossRectangle.Height = 100;
@@ -39,13 +40,14 @@ namespace LegendofGnome
             canvas.Children.Add(bossSword);
             bossSword.Height = swordWidth;
             bossSword.Width = swordLength;
-            bossSword.Fill = Brushes.Silver;
+            bossSword.Fill = Brushes.SlateGray;
             Canvas.SetLeft(bossRectangle, 350);
             Canvas.SetTop(bossRectangle, 350);
             Canvas.SetLeft(bossSword, bossPoint.X + 10);
             Canvas.SetTop(bossSword, bossPoint.Y - 5);
         }
 
+        //puts the boss directly in your face and then sends a hit = true
         public bool attack(Point playerPoint, Rectangle playerRectangle)
         {
             //sets the boss to be right in front of you
@@ -55,18 +57,18 @@ namespace LegendofGnome
             Canvas.SetTop(bossRectangle, bossPoint.Y);
             Canvas.SetLeft(bossSword, bossPoint.X + 10);
             Canvas.SetTop(bossSword, bossPoint.Y - 25);
-            //if (checkCollision(playerPoint, playerRectangle))
-            //{
-            //    temp = true;
-            //}
+            //because he never misses:
             return true;
         }
 
+        //remove the boss if you leave
         public void youLeftTheRoom()
         {
             canvas.Children.Remove(bossRectangle);
             canvas.Children.Remove(bossSword);
         }
+
+        //Code snippet that would check to see if he hit you, but he moves with you so it doesnt ever register true.
 
         //public bool checkCollision(Point s, Rectangle source)
         //{
