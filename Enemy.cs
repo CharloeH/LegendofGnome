@@ -12,6 +12,7 @@ namespace LegendofGnome
 {
     class Enemy
     {
+        Random random = new Random();
         public bool isHit = false;
         public int attackCounter;
         public int attackAnimation = 0;
@@ -23,6 +24,7 @@ namespace LegendofGnome
         public Canvas canvas;
         public Rectangle enemySword = new Rectangle();
         public bool isEnemy;
+        public bool hitThisAttack;
 
         public Enemy(Canvas c, Point eP)
         {
@@ -44,10 +46,10 @@ namespace LegendofGnome
             isEnemy = true;
         }
 
-        public Point Move(Point playerPoint, Point eP, Rectangle playerRectangle)
+        public Point Move(Point playerPoint, Point eP, Rectangle playerRectangle, bool respawn)
         {
             enemyPoint = eP;
-            if (isEnemy)
+            if (isEnemy )
             {
                 //attacks instead of moving
                 if (attackAnimation != 0)
@@ -60,14 +62,14 @@ namespace LegendofGnome
                     if (checkAttack(enemyPoint, playerPoint, enemyRectangle, playerRectangle))
                     {
                         attackCounter++;
-                        //Console.WriteLine(attackCounter);
+                        //Console.WriteLine(attackCounter);//troubleshooting
                         if (attackCounter == 15)
                         {
                             attackAnimation = 12;
                             attackCounter = 0;
                         }
                     }
-
+                    //chases the player
                     if (enemyPoint.X <= playerPoint.X - 25)
                     {
                         enemyPoint.X += 5;
@@ -92,10 +94,10 @@ namespace LegendofGnome
             }
 
             //You have the right to an Enemy. If you cannot afford an Enemy, one will be provided for you.
-            else
+            else if (respawn == true)
             {
                 respawnCounter++;
-                //Console.WriteLine(attackCounter);
+                //Console.WriteLine(attackCounter);//troubleshooting
                 if (respawnCounter == 300)
                 {
                     //MessageBox.Show("i never die");//troubleshooting
@@ -116,7 +118,7 @@ namespace LegendofGnome
         public bool checkAttack(Point t, Point s, Rectangle target, Rectangle source)
         {
             bool temp = false;
-
+            
             if (t.X <= s.X + source.Width & t.Y <= s.Y + source.Height)
             {
                 if (t.X + target.Width >= s.X & t.Y + target.Height >= s.Y)
@@ -154,17 +156,25 @@ namespace LegendofGnome
 
         public bool hit(bool melee)
         {
-            bool temp = false;
-            health--;
             if (health == 0 || melee)
             {
-                temp = true;
-                canvas.Children.Remove(this.enemySword);
-                canvas.Children.Remove(this.enemyRectangle);
-                isEnemy = false;
+                kill();
             }
-            Console.WriteLine("enemy health: " + health);
-            return temp;
+            else
+            {
+                health--;
+            }
+            //Console.WriteLine("enemy health: " + health);//troubleshooting
+            return true;
+        }
+
+        public void kill()
+        {
+            enemyPoint.X = random.Next(50, 799);
+            enemyPoint.Y = random.Next(50, 799);
+            canvas.Children.Remove(this.enemySword);
+            canvas.Children.Remove(this.enemyRectangle);
+            isEnemy = false;
         }
     }
 }
