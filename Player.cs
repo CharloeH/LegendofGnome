@@ -23,8 +23,9 @@ namespace LegendofGnome
         public int health;
         public int gold = 0;
 
-        public Point Move(Rectangle playerRectangle, Canvas canvas, Point playerPoint, bool isRoom1, bool isRoom2, bool isRoom3, Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
+        public Point Move(Rectangle playerRectangle, Canvas canvas, Point pP, bool isRoom1, bool isRoom2, bool isRoom3, Rectangle door1, Rectangle door2, Rectangle door3, Rectangle wallTop1, Rectangle wallTop2, Rectangle wallLeft1, Rectangle wallLeft2, Rectangle wallRight1, Rectangle wallRight2, Rectangle wallBot1, Rectangle wallBot2)
         {
+            playerPoint = pP;
             if (Keyboard.IsKeyDown(Key.W))
             {
                 if (playerPoint.Y >= 50)
