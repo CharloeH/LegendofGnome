@@ -78,6 +78,12 @@ namespace LegendofGnome
         {
             map.roomGenerate(isRoom1, isRoom2, isRoom3, isBossRoom, isShopRoom, door1, door2, door3, wallTop1, wallTop2, wallLeft1, wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
 
+            if (player.health <= 0)
+            {
+                MessageBox.Show("You Died");
+                Environment.Exit(0);
+            }
+
             for (int i = 0; i < enemies.Count(); i++)
             {
                 enemyPoint = enemies[i].Move(playerPoint, enemyPoint, player.playerRectangle, respawn);
@@ -106,6 +112,14 @@ namespace LegendofGnome
                             }
                         }
                     }
+                }
+            }
+            if (isBossRoom)
+            {
+                if (boss.attack(playerPoint, player.playerRectangle))
+                {
+                    player.health = 0;
+                    uI.updateHealth(player.health, player.maxHealth);
                 }
             }
 
@@ -235,6 +249,7 @@ namespace LegendofGnome
                                 wallLeft2, wallRight1, wallRight2, wallBot1, wallBot2);
                             enemies[0].kill();
                             respawn = true;
+                            boss.youLeftTheRoom();
                             return;
                         }
                         if (isRoom3 == true)
