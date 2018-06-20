@@ -14,96 +14,152 @@ namespace LegendofGnome
     {
         public bool isHit = false;
         public int attackCounter;
+        public int attackAnimation = 0;
         public int respawnCounter;
         public int health;
         public int maxHealth = 10;
+        public Point enemyPoint;
         public Rectangle enemyRectangle = new Rectangle();
         public Canvas canvas;
+        public Rectangle enemySword = new Rectangle();
         public bool isEnemy;
 
-        public Enemy(Canvas c, Point EnemyPoint)
+        public Enemy(Canvas c, Point eP)
         {
             canvas = c;
-            Canvas.SetTop(enemyRectangle, EnemyPoint.Y);
-            Canvas.SetLeft(enemyRectangle, EnemyPoint.X);
+            enemyPoint = eP;
+            Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+            Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+            Canvas.SetTop(enemySword, enemyPoint.Y + 10);
+            Canvas.SetLeft(enemySword, enemyPoint.X - 5);
             enemyRectangle.Height = 50;
             enemyRectangle.Width = 50;
+            enemySword.Height = 20;
+            enemySword.Width = 20;
+            enemySword.Fill = Brushes.DarkGray;
             enemyRectangle.Fill = Brushes.Red;
             canvas.Children.Add(enemyRectangle);
+            canvas.Children.Add(enemySword);
             health = maxHealth;
             isEnemy = true;
         }
 
-        public Point Move(Point playerPoint, Point enemyPoint)
+        public Point Move(Point playerPoint, Point eP, Rectangle playerRectangle)
         {
+            enemyPoint = eP;
             if (isEnemy)
             {
-                if ((enemyPoint.X <= playerPoint.X + 50 || enemyPoint.X >= playerPoint.X - 50) & (enemyPoint.Y <= playerPoint.Y + 50 & enemyPoint.Y >= playerPoint.Y - 50))
+                //attacks instead of moving
+                if (attackAnimation != 0)
                 {
-                    isHit = true;
-                    if (isHit == true)
+                    attack();
+                }
+                //if not attacking moves him
+                else
+                {
+                    if (checkAttack(enemyPoint, playerPoint, enemyRectangle, playerRectangle))
                     {
-                        //MessageBox.Show("when removed rito banner of command but not irelia");            
-
                         attackCounter++;
                         //Console.WriteLine(attackCounter);
-                        if (attackCounter == 90)
+                        if (attackCounter == 15)
                         {
-                            MessageBox.Show("ur mum big gay");
+                            attackAnimation = 12;
                             attackCounter = 0;
                         }
                     }
-                }
 
-                if (enemyPoint.X <= playerPoint.X - 50)
-                {
-                    enemyPoint.X += 5;
+                    if (enemyPoint.X <= playerPoint.X - 25)
+                    {
+                        enemyPoint.X += 5;
+                    }
+                    if (enemyPoint.X >= playerPoint.X + 25)
+                    {
+                        enemyPoint.X -= 5;
+                    }
+                    if (enemyPoint.Y >= playerPoint.Y + 25)
+                    {
+                        enemyPoint.Y -= 5;
+                    }
+                    if (enemyPoint.Y <= playerPoint.Y - 25)
+                    {
+                        enemyPoint.Y += 5;
+                    }
+                    Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+                    Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+                    Canvas.SetLeft(enemySword, enemyPoint.X + 10);
+                    Canvas.SetTop(enemySword, enemyPoint.Y - 5);
                 }
-                if (enemyPoint.X >= playerPoint.X + 50)
-                {
-                    enemyPoint.X -= 5;
-                }
-                if (enemyPoint.Y >= playerPoint.Y + 50)
-                {
-                    enemyPoint.Y -= 5;
-                }
-                if (enemyPoint.Y <= playerPoint.Y - 50)
-                {
-                    enemyPoint.Y += 5;
-                }
-                Canvas.SetLeft(enemyRectangle, enemyPoint.X);
-                Canvas.SetTop(enemyRectangle, enemyPoint.Y);
             }
+
+            //You have the right to an Enemy. If you cannot afford an Enemy, one will be provided for you.
             else
             {
                 respawnCounter++;
                 //Console.WriteLine(attackCounter);
                 if (respawnCounter == 300)
                 {
-                    MessageBox.Show("i never die");
+                    //MessageBox.Show("i never die");//troubleshooting
                     respawnCounter = 0;
-                    Canvas.SetTop(enemyRectangle, enemyPoint.Y);
-                    Canvas.SetLeft(enemyRectangle, enemyPoint.X);
                     canvas.Children.Add(enemyRectangle);
+                    canvas.Children.Add(enemySword);
                     isEnemy = true;
                     health = maxHealth;
+                    Canvas.SetTop(enemyRectangle, enemyPoint.Y);
+                    Canvas.SetLeft(enemyRectangle, enemyPoint.X);
+                    Canvas.SetTop(enemySword, enemyPoint.Y + 10);
+                    Canvas.SetLeft(enemySword, enemyPoint.X - 5);
                 }
             }
             return enemyPoint;
         }
 
-        public void attack(int direction)
+        public bool checkAttack(Point t, Point s, Rectangle target, Rectangle source)
         {
-            //Melee melee = new Melee(canvas);
+            bool temp = false;
+
+            if (t.X <= s.X + source.Width & t.Y <= s.Y + source.Height)
+            {
+                if (t.X + target.Width >= s.X & t.Y + target.Height >= s.Y)
+                {
+                    temp = true;
+                }
+            }
+            return temp;
         }
 
-        public bool hit()
+        public void attack()
+        {
+            if (attackAnimation == 10 || attackAnimation == 11 || attackAnimation == 12)
+            {
+                Canvas.SetLeft(enemySword, enemyPoint.X + 15);
+                Canvas.SetTop(enemySword, enemyPoint.Y - 20);
+            }
+            if (attackAnimation == 7 || attackAnimation == 8 || attackAnimation == 9)
+            {
+                Canvas.SetLeft(enemySword, enemyPoint.X - 20);
+                Canvas.SetTop(enemySword, enemyPoint.Y + 15);
+            }
+            if (attackAnimation == 4 || attackAnimation == 5 || attackAnimation ==6)
+            {
+                Canvas.SetLeft(enemySword, enemyPoint.X + 15);
+                Canvas.SetTop(enemySword, enemyPoint.Y + 50);
+            }
+            if (attackAnimation == 1 || attackAnimation == 2 || attackAnimation == 3)
+            {
+                Canvas.SetLeft(enemySword, enemyPoint.X + 50);
+                Canvas.SetTop(enemySword, enemyPoint.Y + 15);
+            }
+            attackAnimation--;
+        }
+
+        public bool hit(bool melee)
         {
             bool temp = false;
             health--;
-            if (health == 0)
+            if (health == 0 || melee)
             {
                 temp = true;
+                canvas.Children.Remove(this.enemySword);
                 canvas.Children.Remove(this.enemyRectangle);
                 isEnemy = false;
             }
