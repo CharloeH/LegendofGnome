@@ -109,8 +109,8 @@ namespace LegendofGnome
             //returns sword to resting position when not being swung
             else if (Mouse.RightButton != MouseButtonState.Pressed)
             {
-                Canvas.SetLeft(playerSword, playerPoint.X + 10);
-                Canvas.SetTop(playerSword, playerPoint.Y - 5);
+                Canvas.SetLeft(playerSword, playerPoint.X + 5);
+                Canvas.SetTop(playerSword, playerPoint.Y + 5);
             }
             Canvas.SetLeft(playerRectangle, playerPoint.X);
             Canvas.SetTop(playerRectangle, playerPoint.Y);
