@@ -1,0 +1,9 @@
+kill enemy upon changing room (enemies[0].hit(true)) , will also need to remove 50g when we do this.
+refill health? shopkeeper [just over time (if timerCounter % 600 health ++; refills a health every 100s)?]
+set a bool to stop the master swing with mega damage.
+*maybe* fix bug where you can beat a dead horse (enemy) for money
+add variables for damage (ranged only)
+create a boss...
+ - boss class: stand in middle and give big smack where u standing?
+ * can prob skip boss if we have to.
+add !items!, maybe make a shop for maxhp, attack, and healing?
